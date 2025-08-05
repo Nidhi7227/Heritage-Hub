@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(to right, #fdf6e3, #f8ecd7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background-color: #fffbe6;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.logo {
+  text-align: center;
+}
+
+.logo img {
+  width: 80px;
+  margin-bottom: 15px;
+}
+
+form.sign {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form.sign h2 {
+  color: #5d3a00;
+}
+
+input,
+select,
+button {
+  padding: 20px;
+
+  border-radius: 8px;
+  border: 1.5px solid #bba05b;
+  font-size: 1rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #a67c00;
+}
+
+button {
+  background-color: #d4af37;
+  color: #fff;
+  border: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #b38e19;
+}
+
+.note {
+  font-size: 0.8rem;
+  color: #6e5c2f;
+}

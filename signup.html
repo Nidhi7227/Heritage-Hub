@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Heritage Signup</title>
+  <link rel="stylesheet" href="sign.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">
+    <H2>HERITAGE HUB</H2>
+    <form class="sign">
+      <h2>Create Your HeritageHub Account</h2>
+    <input type="text" id="name" placeholder="Fullname" required>
+      <input type="text" id="user" placeholder="Username" required>
+      <input type="email" id="mail" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirm" placeholder="Confirm Password" required>
+
+      <label for="interests" class="form-label">Select Your Interests</label>
+      <select id="interests" name="interests[]" class="form-select" multiple required>
+        <option value="temples">Temples & Shrines</option>
+        <option value="forts">Forts & Palaces</option>
+        <option value="trade">Ancient Trade Routes</option>
+        <option value="freedom">Freedom Struggle Sites</option>
+        <option value="archaeology">Archaeological Sites</option>
+        <option value="colonial">Colonial Architecture</option>
+        <option value="tribal">Tribal & Indigenous Culture</option>
+        <option value="folktales">Folk Tales & Legends</option>
+        <option value="festivals">Festivals & Rituals</option>
+        <option value="arts">Traditional Art Forms</option>
+        <option value="music">Classical Dance & Music</option>
+        <option value="natural">Sacred Natural Heritage</option>
+        <option value="spiritual">Spiritual Sites & Ashrams</option>
+        <option value="mythology">Mythological Stories</option>
+      </select>
+      <small class="note">Hold Ctrl (Windows) or ⌘ (Mac) to select multiple options</small>
+
+      <button type="button" id="login">Sign up</button>
+    </form>
+  </div>
+</div>
+<script type="module" src="sign.js" defer></script>
+</body>
+</html>
