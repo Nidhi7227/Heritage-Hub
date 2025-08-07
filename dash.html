@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+    .dashboard {
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    .profile {
+      display: flex;
+      justify-content: space-between;
+    }
+    .weather, .map {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>Welcome, Nivetha!</h1>
+
+    <div class="card profile">
+      <div><strong>Email:</strong> nivetha@email.com</div>
+      <div><strong>Total Stories:</strong> 8</div>
+    </div>
+
+    <div class="card">
+      <h2>Your Submissions</h2>
+      <ul>
+        <li>Madurai Meenakshi Temple - Story submitted</li>
+        <li>Brihadeeswarar Temple - Pending verification</li>
+      </ul>
+    </div>
+
+    <div class="card weather">
+      <h2>Current Weather</h2>
+      <div id="weather">Loading...</div>
+    </div>
+
+    <div class="card map">
+      <h2>Visited Places</h2>
+      <div id="map" style="height: 300px;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Weather API example
+    const apiKey = "YOUR_OPENWEATHERMAP_KEY";
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Madurai&appid=${apiKey}&units=metric`)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("weather").innerText = `${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
+      })
+      .catch(() => {
+        document.getElementById("weather").innerText = "Failed to load weather.";
+      });
+
+    // Google Map
+    function initMap() {
+      const location = { lat: 9.9252, lng: 78.1198 }; // Madurai
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 10,
+        center: location,
+      });
+      new google.maps.Marker({ position: location, map: map });
+    }
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLEMAPS_KEY&callback=initMap" async defer></script>
+</body>
+</html>
