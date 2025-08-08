@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to right, #f0e7db, #e8d4b0);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contributor-wrapper {
+  padding: 80px;
+  width: 100%;
+}
+
+.contributor-card {
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff7ed;
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #d8b98b;
+}
+
+.contributor-card h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #5a3e1b;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"],
+textarea {
+  padding: 20px;
+  border: 1.5px solid #c9a96e;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+label {
+  font-size: 1rem;
+  color: #5d4b2c;
+  font-weight: 500;
+}
+
+button {
+  padding: 10px;
+  background-color: #9c6b30;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #7a501f;
+}
