@@ -5,76 +5,30 @@
   <title>Explore Page</title>
   <link rel="stylesheet" href="explore.css">
 </head>
-<body id="bg">
+<body>
 
 <section id="hero">
-    <h1>EXPLORE HISTORICAL PLACES OF TAMILNADU</h1>
+    <div class="hero-content">
+        <h1>EXPLORE HISTORICAL PLACES OF TAMILNADU</h1>
+    </div>
 </section>
-<div class="district-row">
 
-    <!-- District Box -->
-    <div class="district-box">
-      <img src="https://1.bp.blogspot.com/-5VpSsCClvIE/W36GxJEHQOI/AAAAAAABJ90/9Fhe4gvBobQrM7jzMZmyzWHEuMKxORVYACEwYBhgL/s1600/114_1425_1_s_b_800.jpg" alt="Madurai Temple" />
-      <h3>Madurai</h3>
-      <p>City of Temples & Sangam Culture</p>
-    </div>
+<section id="districts" class="grid-container"></section>
 
-    <!-- District Box -->
-    <div class="district-box">
-      <img src="https://th.bing.com/th?id=OLC.JgQt3m+W0OMoKA480x360&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Gingee Fort" />
-      <h3>Viluppuram</h3>
-      <p>Home of Gingee Fort & Ancient Temples</p>
-    </div>
-    <div class="district-box">
-      <img src="https://www.nativeplanet.com/img/2018/11/poompuhar-view-from-the-lighthouse-1542282512.jpg" />
-      <h3>Mayilaaduthurai</h3>
-      <p>Poompuhar a historical port</p>
-    </div>
-    <div class="district-box">
-      <img src="https://nykdaily.com/wp-content/uploads/2021/10/cce65e5595a2a2913c8bb9b2c5ee9a72.jpg" />
-      <h3>Thoothukudi</h3>
-      <p>Korkai Port A historical port in thoothukudi which was built during Pandya Dynasty</p>
-    </div>
-    <div class="district-box">
-      <img src="https://storytrails.in/wp-content/uploads/2023/04/Mohenjo-Daro-768x432.jpg" />
-      <h3>Thoothukudi</h3>
-      <p>Aadhichanallur Archeological site</p>
-    </div>
-    <div class="district-box">
-      <img src="https://th.bing.com/th/id/R.ea357e8911b0ed01f4e891ceaa882907?rik=%2bb8LJS%2f3o5kK0A&riu=http%3a%2f%2fchennai-in-focus.com%2fsites%2fdefault%2ffiles%2fstyles%2fflexslider_full%2fpublic%2f2018-06%2fIMG_4750.jpg%3fitok%3dznCuPeLz&ehk=EojpOx0VCpYT%2bzDmIdLtY8tZ3TyeLzonVcdvxfAEmy0%3d&risl=&pid=ImgRaw&r=0" />
-      <h3>Sivagangai</h3>
-      <p>Kaanadukaathan palace</p>
-    </div>
-     <div class="district-box">
-      <img src="https://tse1.mm.bing.net/th/id/OIP.y5oXRUWjugMxrgcO4jr6_gHaEI?w=1040&h=580&rs=1&pid=ImgDetMain&o=7&rm=3" />
-      <h3>Cuddalore</h3>
-      <p>Alamparai fort</p>
-    </div>
-
-    <!-- Add more district boxes as needed -->
-
-  </div>
-
-  <script>
-
-  const images = [
-    'kanya.jpg',
-    'eesa.jpg',
-    'maha.jpg',
-    '1.jpg'
-  ];
-
+<script>
+  const images = ['kanya.jpg', 'eesa.jpg', 'maha.jpg', '1.jpg'];
   let index = 0;
-  const bg = document.getElementById("bg");
+  const hero = document.getElementById("hero");
 
   function changeBackground() {
-    bg.style.backgroundImage = `url('${images[index]}')`;
+    hero.style.backgroundImage = `url('${images[index]}')`;
     index = (index + 1) % images.length;
   }
 
-  setInterval(changeBackground, 3000); 
+  setInterval(changeBackground, 3000);
   changeBackground();
 </script>
 
+<script type="module" src="./explore.js"></script>
 </body>
 </html>
