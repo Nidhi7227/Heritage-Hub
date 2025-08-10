@@ -7,18 +7,40 @@
   <link rel="stylesheet" href="contributor.css">
 </head>
 <body>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+      emailjs.init("8mebFs2PGpi2JbjkA"); // Replace with your EmailJS Public Key
+  })();
+</script>
   <div class="form-container">
     <h2>Contribute a Heritage Story</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <input type="text" placeholder="Story Title" required>
-      <textarea placeholder="Write your story here..." rows="6" required></textarea>
-      <label for="image-upload">Upload Image:</label>
-      <input type="file" id="image-upload" accept="image/*">
-      <button type="submit">Submit Story</button>
-    </form>
+  <form id="storyForm">
+    <input type="text" name="from_name" placeholder="Your Name" required>
+    <input type="text" name="story_title" placeholder="Story Title" required>
+    <textarea name="story_description" placeholder="Story Description" required></textarea>
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById("storyForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    emailjs.sendForm('service_ilwca7s', 'template_rjt8uon', this)
+    .then(function() {
+        alert("Story submitted! Admin will be notified via email.");
+    }, function(error) {
+        alert("Failed to send email: " + JSON.stringify(error));
+    });
+});
+</script>
+
   </div>
+<<<<<<< HEAD
   <script type="module" src="form.js"></script>
+=======
+
+
+>>>>>>> ce4715af1e484ba5f9483009d9c3da3f5fa4780a
 </body>
 </html>

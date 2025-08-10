@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HeritageHub Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>HeritageHub</h2>
+  <ul>
+   
+    <li><a href="#">Contributors</a></li>
+    <li><a href="#">Stories</a></li>
+    <li><a href="#">Heritage Sites</a></li>
+    <li><a href="#">Settings</a></li>
+  </ul>
+</div>
+
+<div class="main-content">
+  <header>
+    <h1>Admin Dashboard</h1>
+    <div class="admin-info">
+      <span>Welcome, Admin</span>
+    </div>
+  </header>
+
+<div class="stats-container">
+  <div class="stat-card contributors">
+    <h3>Total Contributors</h3>
+    <p>90</p>
+  </div>
+  <div class="stat-card stories">
+    <h3>Total Stories</h3>
+    <p>113</p>
+  </div>
+  <div class="stat-card approvals">
+    <h3>Pending Approvals</h3>
+    <p>27</p>
+  </div>
+  <div class="stat-card sites">
+    <h3>Heritage Sites</h3>
+    <p>82</p>
+  </div>
+</div>
+
+
+  <div class="charts">
+    <canvas id="storiesChart"></canvas>
+  </div>
+
+  <div class="table-section">
+    <h2>Recent Story Submissions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Contributor</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Temple History</td>
+          <td>Ravi</td>
+          <td>2025-08-05</td>
+          <td>Pending</td>
+        </tr>
+        <tr>
+          <td>Fort Architecture</td>
+          <td>Priya</td>
+          <td>2025-08-04</td>
+          <td>Approved</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const ctx = document.getElementById('storiesChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+      datasets: [{
+        label: 'Stories Submitted',
+        data: [10, 20, 15, 25],
+        backgroundColor: '#d4af37'
+      }]
+    },
+    options: { responsive: true }
+  });
+</script>
+
+</body>
+</html>
