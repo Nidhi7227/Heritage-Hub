@@ -1,16 +1,42 @@
+/* Navbar */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+.navbar-brand:hover {
+  color: #0d6efd;
+}
 
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.25rem;
-    }
-    .navbar-nav .nav-link {
-      margin-left: 20px;
-      font-weight: 500;
-    }
+.navbar-nav .nav-link {
+  margin-left: 20px;
+  font-weight: 500;
+  position: relative;
+  transition: color 0.3s ease;
+}
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background: #0d6efd;
+  transition: width 0.3s ease;
+}
+.navbar-nav .nav-link:hover {
+  color: #0d6efd;
+}
+.navbar-nav .nav-link:hover::after {
+  width: 100%;
+}
+
+/* Hero Section */
 .hero {
   position: relative;
   height: 100vh;
-  background-image: url('https://images.unsplash.com/photo-1565866184570-dbde9dca71d0?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-image: url('https://images.unsplash.com/photo-1565866184570-dbde9dca71d0?q=80&w=774&auto=format&fit=crop');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,13 +45,68 @@
   justify-content: center;
   text-align: center;
   color: white;
+  overflow: hidden;
 }
-
-
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* Dark overlay */
+}
 .hero-text {
+  position: relative;
   z-index: 1;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.4); 
-  border-radius: 10px;
+  padding: 20px 30px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  animation: fadeUp 1.5s ease-out;
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+.hero p {
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+.hero .btn {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.hero .btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
 }
 
+/* About Section */
+.about-us p {
+  line-height: 1.7;
+}
+.about-us img {
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+.about-us img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+footer {
+  font-size: 0.9rem;
+  background: #f8f9fa;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

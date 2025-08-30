@@ -1,127 +1,106 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* contributor.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Cinzel:wght@600&display=swap');
 
 body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(to right, #f0e7db, #e8d4b0);
-  height: 100vh;
+  background: linear-gradient(135deg, #fdfcf9, #f5efe6);
+  color: #333;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
+
+  /* Subtle heritage motif background */
+  background-image: url("https://www.transparenttextures.com/patterns/aged-paper.png");
+  background-repeat: repeat;
+  background-size: contain;
 }
 
-.contributor-wrapper {
-  padding: 80px;
-  width: 100%;
-}
-
-.contributor-card {
-  max-width: 800px;
-  width: 100%;
-  background-color: #fff7ed;
-  padding: 50px;
+/* Form Container */
+.form-container {
+  background: #ffffffee;
+  padding: 35px 40px;
   border-radius: 20px;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-  border: 1px solid #d8b98b;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  border: 3px solid #d4a017; /* golden border */
+  max-width: 500px;
+  width: 100%;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-.contributor-card h1 {
+/* Heading */
+.form-container h2 {
   text-align: center;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: #5a3e1b;
+  margin-bottom: 20px;
+  font-family: 'Cinzel', serif;
+  color: #8c5a39;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
 }
 
-/* form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Inputs & Textarea */
+form input, 
+form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="file"],
-textarea {
-  padding: 30px;
-  border: 1.5px solid #c9a96e;
-  border-radius: 30px;
-  font-size: 1.05rem;
-  background-color: #fff;
+form input:focus, 
+form textarea:focus {
+  border-color: #8c5a39;
+  box-shadow: 0 0 10px rgba(212, 160, 23, 0.4); /* golden glow */
 }
 
-textarea {
+form textarea {
+  min-height: 120px;
   resize: vertical;
+  line-height: 1.5;
 }
 
-label {
-  font-size: 1rem;
-  color: #5d4b2c;
+/* File Input */
+input[type="file"] {
+  background: #f8f4f0;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Submit Button */
+form button {
+  width: 100%;
+  background: linear-gradient(135deg, #8c5a39, #d4a017);
+  color: #fff;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s;
+}
+
+form button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(212,160,23,0.4);
+}
+
+/* Status Message */
+#statusMsg {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 15px;
   font-weight: 500;
 }
 
-button {
-  padding: 10px;
-  background-color: #9c6b30;
-  color: white;
-  border: none;
-  font-weight: bold;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-
-button:hover {
-  background-color: #7a501f;
-} */
-
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f1e1c2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    form {
-        background: #f3e3c3;
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        width: 450px; /* Increased width for bigger boxes */
-        text-align: center;
-    }
-    h2 {
-        margin-bottom: 20px;
-        color: #000;
-    }
-    input, textarea {
-        width: 100%;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 25px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-    }
-    textarea {
-        height: 200px; /* Bigger height for long stories */
-        resize: vertical; /* Allow users to resize */
-        border-radius: 15px;
-    }
-    button {
-        background-color: #a06b25;
-        color: white;
-        padding: 12px;
-        border: none;
-        width: 100%;
-        font-size: 16px;
-        border-radius: 10px;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #8b5e1e;
-    }
-

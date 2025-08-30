@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reset Password Debug</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 420px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    input[type="email"] {
+      padding: 12px 15px;
+      font-size: 1rem;
+      width: 65%;
+      border: 1.5px solid #ddd;
+      border-radius: 6px 0 0 6px;
+      outline: none;
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+
+    input[type="email"]:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+    }
+
+    button {
+      width: 33%;
+      padding: 12px 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: white;
+      background-color: #0d6efd;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+      vertical-align: middle;
+      transition: background-color 0.25s ease;
+    }
+
+    button:hover {
+      background-color: #084ec8;
+    }
+
+    #log {
+      margin-top: 20px;
+      text-align: left;
+      font-family: monospace;
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 15px;
+      border-radius: 6px;
+      height: 100px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Reset Password Debug</h2>
+    <input type="email" id="email" placeholder="Enter your registered email" />
+    <button id="btn">Send Reset Link</button>
+    <pre id="log"></pre>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-auth-compat.js"></script>
+
+  <script>
+ const firebaseConfig = {
+  apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
+  authDomain: "heritagehub-ede14.firebaseapp.com",
+  projectId: "heritagehub-ede14",
+  storageBucket: "heritagehub-ede14.firebasestorage.app",
+  messagingSenderId: "517516088585",
+  appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
+};
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const btn = document.getElementById('btn');
+    const emailInput = document.getElementById('email');
+    const log = document.getElementById('log');
+
+    btn.addEventListener('click', () => {
+      const email = emailInput.value.trim();
+      log.textContent = `Trying to send reset email to: ${email}\n`;
+
+      if (!email) {
+        log.textContent += 'Error: Please enter an email.\n';
+        return;
+      }
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          log.textContent += '✅ Success! Reset email sent.\nCheck your inbox or spam folder.\n';
+        })
+        .catch(error => {
+          log.textContent += `❌ Error: ${error.code}\nMessage: ${error.message}\n`;
+        });
+    });
+  </script>
+<script src="translate.js"></script>
+</body>
+</html>

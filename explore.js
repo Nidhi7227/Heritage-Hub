@@ -1,8 +1,5 @@
-console.log("hello");
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
@@ -13,44 +10,41 @@ const firebaseConfig = {
   appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loadDistricts() {
-  console.log("📡 Fetching districts from Firestore...");
-
   const container = document.getElementById("districts");
-  container.innerHTML = ""; 
+  container.innerHTML = "";
 
   try {
     const snapshot = await getDocs(collection(db, "districts"));
-    if (snapshot.empty) {
-      container.innerHTML = "<p>No data found.</p>";
-      return;
-    }
-
-    snapshot.forEach((doc) => {
+    snapshot.forEach((doc, i) => {
       const data = doc.data();
-      console.log(`✅ Document: ${doc.id}`, data);
+      const districtId = doc.id;
 
       const card = document.createElement("div");
       card.className = "card";
-
       card.innerHTML = `
         <img src="${data.image}" alt="${data.name}">
         <div class="card-content">
           <h3>${data.name}</h3>
           <p>${data.description}</p>
-          <button>View More</button>
+          <button class="view-more">View More</button>
         </div>
       `;
 
-      container.appendChild(card);
-    });
+      card.querySelector(".view-more").addEventListener("click", () => {
+        window.location.href = `district.html?id=${districtId}`;
+      });
 
+      container.appendChild(card);
+
+      // staggered animation
+      setTimeout(() => card.classList.add("visible"), i * 150);
+    });
   } catch (err) {
-    console.error("❌ Firestore fetch error:", err);
+    console.error("Firestore error:", err);
     container.innerHTML = "<p>Error loading data.</p>";
   }
 }

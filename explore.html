@@ -2,20 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Explore Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Page – Heritage Hub</title>
   <link rel="stylesheet" href="explore.css">
 </head>
 <body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">🏛 Heritage Hub</div>
+  <ul class="navbar-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="contribute.html">Contribute</a></li>
+    <li><a href="login.html">Login</a></li>
+    <li>
+      <button id="lang-toggle" class="btn btn-sm btn-outline-primary">தமிழ்</button>
+    </li>
+  </ul>
+</nav>
 
+<!-- Hero -->
 <section id="hero">
-    <div class="hero-content">
-        <h1>EXPLORE HISTORICAL PLACES OF TAMILNADU</h1>
-    </div>
+  <div class="hero-content">
+    <h1>EXPLORE HISTORICAL PLACES OF TAMILNADU</h1>
+  </div>
 </section>
 
+<!-- Search -->
+<input 
+  type="text" 
+  id="searchBar" 
+  placeholder="Search districts..." 
+/>
+
+<!-- Districts Grid -->
 <section id="districts" class="grid-container"></section>
 
+<script type="module" src="explore.js"></script>
+<script src="translate.js"></script>
 <script>
+  // Hero background slideshow
   const images = ['kanya.jpg', 'eesa.jpg', 'maha.jpg', '1.jpg'];
   let index = 0;
   const hero = document.getElementById("hero");
@@ -24,11 +49,8 @@
     hero.style.backgroundImage = `url('${images[index]}')`;
     index = (index + 1) % images.length;
   }
-
-  setInterval(changeBackground, 3000);
+  setInterval(changeBackground, 5000);
   changeBackground();
 </script>
-
-<script type="module" src="./explore.js"></script>
 </body>
 </html>
