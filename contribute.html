@@ -2,148 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Contribute a Heritage Story</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contributor Form</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="contributor.css">
-  <style>
-    .loading { color: #0d6efd; font-weight: bold; margin-top: 10px; }
-    .success { color: green; font-weight: bold; margin-top: 10px; }
-    .location-status { font-size: 14px; margin-top: 5px; color: #6b4226; }
-  </style>
 </head>
 <body>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+      emailjs.init("8mebFs2PGpi2JbjkA"); // Replace with your EmailJS Public Key
+  })();
+</script>
   <div class="form-container">
     <h2>Contribute a Heritage Story</h2>
-    <form id="storyForm">
-      <input type="text" name="from_name" placeholder="Your Name" required>
-      <input type="email" name="contributorEmail" placeholder="Your Email" required>
-      <input type="text" name="story_title" placeholder="Story Title" required>
-      <textarea name="story_description" placeholder="Story Description" required></textarea>
-      <input type="text" name="district" placeholder="District" required>
-      <input type="file" name="story_image" accept="image/*" required>
+  <form id="storyForm">
+    <input type="text" name="from_name" placeholder="Your Name" required>
+    <input type="text" name="story_title" placeholder="Story Title" required>
+    <textarea name="story_description" placeholder="Story Description" required></textarea>
+    <button type="submit">Submit</button>
+</form>
 
-      <!-- Hidden fields for GPS -->
-      <input type="hidden" name="latitude" id="latitude">
-      <input type="hidden" name="longitude" id="longitude">
-      <p id="locationStatus" class="location-status">📍 Trying to fetch your location...</p>
+<script>
+document.getElementById("storyForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-      <button type="submit">Submit</button>
-    </form>
-    <div id="statusMsg"></div>
-  </div>
-
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-  <script>
-    emailjs.init("8mebFs2PGpi2JbjkA"); // Your EmailJS Public Key
-  </script>
-
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-storage.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
-  authDomain: "heritagehub-ede14.firebaseapp.com",
-  projectId: "heritagehub-ede14",
-  storageBucket: "heritagehub-ede14.firebasestorage.app",
-  messagingSenderId: "517516088585",
-  appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
-};
-
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-
-    const storyForm = document.getElementById("storyForm");
-    const statusMsg = document.getElementById("statusMsg");
-
-    // 🌍 Try to get user location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          document.getElementById("latitude").value = position.coords.latitude;
-          document.getElementById("longitude").value = position.coords.longitude;
-          document.getElementById("locationStatus").textContent = "✅ Location tagged successfully!";
-        },
-        () => {
-          document.getElementById("locationStatus").textContent = "⚠️ Location access denied. Please enter district manually.";
-        }
-      );
-    } else {
-      document.getElementById("locationStatus").textContent = "❌ Geolocation not supported on this device.";
-    }
-
-    // 📩 Handle form submission
-    storyForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      statusMsg.textContent = "Submitting...";
-      statusMsg.className = "loading";
-
-      const name = storyForm.from_name.value;
-      const email = storyForm.contributorEmail.value;
-      const title = storyForm.story_title.value;
-      const description = storyForm.story_description.value;
-      const district = storyForm.district.value;
-      const file = storyForm.story_image.files[0];
-      const latitude = storyForm.latitude.value || null;
-      const longitude = storyForm.longitude.value || null;
-
-      if (!file) {
-        statusMsg.textContent = "Please select an image!";
-        statusMsg.className = "loading";
-        return;
-      }
-
-      try {
-        // 🔹 Upload image
-        const storageRef = ref(storage, `contributions/${Date.now()}_${file.name}`);
-        await uploadBytes(storageRef, file);
-        const imageUrl = await getDownloadURL(storageRef);
-
-        // 🔹 Save story in Firestore
-        await addDoc(collection(db, "contributions"), {
-          title,
-          description,
-          contributorName: name,
-          contributorEmail: email,
-          district,
-          latitude,
-          longitude,
-          status: "pending",
-          timestamp: serverTimestamp(),
-          imageUrl
-        });
-
-        // 🔹 Send EmailJS notification to admin
-        await emailjs.send('service_ilwca7s', 'template_rjt8uon', {
-          from_name: name,
-          contributorEmail: email,
-          story_title: title,
-          story_description: description,
-          district: district,
-          imageUrl: imageUrl,
-          latitude,
-          longitude
-        });
-
-        statusMsg.textContent = "🎉 Story submitted successfully! Admin will be notified.";
-        statusMsg.className = "success";
-        storyForm.reset();
-        document.getElementById("locationStatus").textContent = ""; // reset location msg
-
-      } catch (err) {
-        console.error("Submission error:", err);
-        statusMsg.textContent = "Failed to submit story. Please try again.";
-        statusMsg.className = "loading";
-      }
+    emailjs.sendForm('service_ilwca7s', 'template_rjt8uon', this)
+    .then(function() {
+        alert("Story submitted! Admin will be notified via email.");
+    }, function(error) {
+        alert("Failed to send email: " + JSON.stringify(error));
     });
-  </script>
+});
+</script>
 
-  <script src="translate.js"></script>
+  </div>
+  <script type="module" src="form.js"></script>
 </body>
 </html>
