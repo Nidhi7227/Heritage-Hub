@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HeritageHub Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Leaflet Routing Machine CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+  <!-- Custom CSS -->
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+    }
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+    .search-container {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      width: 400px;
+      max-width: 90%;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    #place-input {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+    #search-btn {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #info-panel {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      max-width: 250px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Search box -->
+  <div class="search-container">
+    <input type="text" id="place-input" placeholder="Search for a place...">
+    <button id="search-btn">Search</button>
+  </div>
+
+  <!-- Map -->
+  <div id="map"></div>
+
+  <!-- Info panel -->
+  <div id="info-panel">
+    <strong>Route Info</strong>
+    <div id="route-details">Search a place to see details</div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Routing machine -->
+  <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
+  <script>
+    // Init map
+    const map = L.map('map').setView([20.5937, 78.9629], 5);
+
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let userMarker, routeControl;
+
+    // Get user location
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const userLatLng = [pos.coords.latitude, pos.coords.longitude];
+        map.setView(userLatLng, 13);
+        userMarker = L.marker(userLatLng).addTo(map)
+          .bindPopup("You are here").openPopup();
+      });
+    }
+
+    // Search button action
+    document.getElementById("search-btn").addEventListener("click", () => {
+      const place = document.getElementById("place-input").value;
+      if (!place) return;
+
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${place}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.length > 0) {
+            const destLatLng = [data[0].lat, data[0].lon];
+
+            // Remove old route if any
+            if (routeControl) {
+              map.removeControl(routeControl);
+            }
+
+            // Add routing
+            routeControl = L.Routing.control({
+              waypoints: [
+                userMarker.getLatLng(),
+                L.latLng(destLatLng[0], destLatLng[1])
+              ],
+              routeWhileDragging: false
+            }).addTo(map);
+
+            // Show info panel
+            routeControl.on('routesfound', function(e) {
+              const summary = e.routes[0].summary;
+              document.getElementById("route-details").innerHTML = `
+                <b>Destination:</b> ${data[0].display_name}<br>
+                <b>Distance:</b> ${(summary.totalDistance/1000).toFixed(2)} km<br>
+                <b>Time:</b> ${(summary.totalTime/60).toFixed(1)} mins
+              `;
+            });
+          } else {
+            alert("Place not found!");
+          }
+        });
+    });
+  </script>
+</body>
+</html>

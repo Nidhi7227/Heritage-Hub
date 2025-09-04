@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
   authDomain: "heritagehub-ede14.firebaseapp.com",
@@ -11,69 +10,75 @@ const firebaseConfig = {
   appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
 };
 
-// Init Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Helper: capitalize first letter
-function capitalizeFirstLetter(str) {
-  if (!str) return str;
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
+// Get district id from URL
+const params = new URLSearchParams(window.location.search);
+const districtId = params.get("id");
 
-// Get district from URL
-const urlParams = new URLSearchParams(window.location.search);
-let district = urlParams.get("district");
-
-// Validate district
-if (!district) {
-  document.body.innerHTML = "<h2>No district selected! Open with ?district=Sivagangai</h2>";
-} else {
-  district = capitalizeFirstLetter(district); // fix case
-  document.getElementById("districtName").innerText = district;
-
-  // Redirect to place.html
-  function viewPlace(placeId) {
-    window.location.href = `place.html?id=${placeId}&district=${district}`;
+async function loadDistrictData() {
+  if (!districtId) {
+    document.getElementById("districtName").textContent = "No district selected!";
+    return;
   }
 
-  // Fetch places
-  async function loadPlaces() {
-    const placesContainer = document.getElementById("placesContainer");
-    placesContainer.innerHTML = "<p>Loading places...</p>";
+  try {
+    // 1. Get district details
+    const districtRef = doc(db, "districts", districtId);
+    const districtSnap = await getDoc(districtRef);
 
-    try {
-      const querySnapshot = await getDocs(collection(db, "districts", district, "places"));
-
-      if (querySnapshot.empty) {
-        placesContainer.innerHTML = "<p>No places found in this district.</p>";
-        return;
-      }
-
-      placesContainer.innerHTML = ""; // clear loading text
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const placeCard = document.createElement("div");
-        placeCard.className = "place-card";
-
-        placeCard.innerHTML = `
-          <img src="${data.imageURL || 'default.jpg'}" alt="${data.name}">
-          <h3>${data.name}</h3>
-          <button>View More</button>
-        `;
-
-        placeCard.querySelector("button").addEventListener("click", () => {
-          viewPlace(doc.id);
-        });
-
-        placesContainer.appendChild(placeCard);
-      });
-    } catch (err) {
-      console.error("Error fetching places: ", err);
-      placesContainer.innerHTML = "<p>Error loading places. Check district spelling!</p>";
+    if (districtSnap.exists()) {
+      const districtData = districtSnap.data();
+      document.getElementById("districtName").textContent = districtData.name;
+    } else {
+      document.getElementById("districtName").textContent = "District not found!";
+      return;
     }
-  }
 
-  loadPlaces();
+    // 2. Get places under this district
+    const placesContainer = document.getElementById("placesContainer");
+    placesContainer.innerHTML = "";
+
+    const placesSnap = await getDocs(collection(db, `districts/${districtId}/places`));
+    if (placesSnap.empty) {
+      placesContainer.innerHTML = "<p>No places found for this district.</p>";
+      return;
+    }
+
+    placesSnap.forEach((placeDoc) => {
+      const place = placeDoc.data();
+
+      const card = document.createElement("div");
+      card.className = "place-card";
+      card.innerHTML = `
+        <img src="${place.image || "placeholder.jpg"}" alt="${place.name}">
+        <h3>${place.name}</h3>
+        <p>${place.description || "No description available."}</p>
+        <button onclick="alert('Route to ${place.name} coming soon!')">View on Map</button>
+      `;
+
+      placesContainer.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Error loading district data:", error);
+    document.getElementById("districtName").textContent = "Error loading data!";
+  }
 }
+
+loadDistrictData();
+placesSnap.forEach((placeDoc) => {
+  const place = placeDoc.data();
+
+  const card = document.createElement("div");
+  card.className = "place-card";
+  card.innerHTML = `
+    <img src="${place.image || "placeholder.jpg"}" alt="${place.name}">
+    <h3>${place.name}</h3>
+    <p>${place.description ? place.description.substring(0, 80) + "..." : "No description available."}</p>
+    <button onclick="window.location.href='place.html?district=${districtId}&place=${placeDoc.id}'">View More</button>
+  `;
+
+  placesContainer.appendChild(card);
+});

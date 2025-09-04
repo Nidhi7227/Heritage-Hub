@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HeritageHub Weather Magic</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+    --primary-color:#1b1f3b;
+    --accent-color:#d4a373;
+    --card-bg:rgba(255,255,255,0.85);
+    --text-color:#1b1f3b;
+}
+
+/* Body & gradient */
+body{
+    margin:0;
+    padding:0;
+    font-family:'Poppins',sans-serif;
+    color:var(--text-color);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(to top,#f4e1c1,#d4a373);
+}
+
+/* Clouds */
+.cloud{position:absolute;background:#fff;border-radius:50%;opacity:0.7;filter:blur(12px);animation:floatCloud linear infinite;}
+.cloud1{width:200px;height:80px;top:50px;left:-250px;animation-duration:60s;}
+.cloud2{width:150px;height:60px;top:120px;left:-200px;animation-duration:90s;}
+.cloud3{width:180px;height:70px;top:200px;left:-220px;animation-duration:75s;}
+@keyframes floatCloud{0%{transform:translateX(0);}100%{transform:translateX(140vw);}}
+
+/* Heading */
+h2{text-align:center;font-size:3rem;margin:20px 0 10px;color:var(--primary-color);font-weight:700;text-shadow:2px 2px 8px rgba(0,0,0,0.3);}
+p{text-align:center;font-size:1.2rem;margin-bottom:30px;}
+
+/* Input & button */
+.input-container{display:flex;gap:15px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;}
+input{padding:12px 20px;border-radius:50px;border:none;backdrop-filter:blur(8px);background:rgba(255,255,255,0.25);font-size:1rem;color:var(--primary-color);outline:none;min-width:220px;text-align:center;transition:all 0.4s ease;}
+input:focus{background:rgba(255,255,255,0.4);box-shadow:0 0 20px var(--accent-color);}
+button{padding:12px 25px;border-radius:50px;border:none;background:var(--accent-color);color:#fff;font-weight:600;cursor:pointer;transition:all 0.3s ease;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+button:hover{transform:scale(1.1);box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+
+/* Weather card */
+.weather-card{width:350px;padding:30px 25px;border-radius:25px;background:var(--card-bg);box-shadow:0 15px 35px rgba(0,0,0,0.2);text-align:center;backdrop-filter:blur(10px);transition:transform 0.5s ease,box-shadow 0.5s ease;opacity:0;transform:translateY(50px);}
+.weather-card.show{opacity:1;transform:translateY(0);}
+.weather-card h3{font-size:1.8rem;margin-bottom:10px;}
+.weather-card p{font-size:1.2rem;margin:5px 0;}
+.weather-icon{font-size:4rem;margin-bottom:10px;animation:floatIcon 3s ease-in-out infinite alternate;}
+@keyframes floatIcon{0%{transform:translateY(0px);}100%{transform:translateY(-10px);}}
+
+/* Travel tip */
+#travelTip{margin-top:20px;background:rgba(255,255,255,0.85);padding:15px 20px;border-radius:20px;text-align:center;font-weight:600;font-size:1rem;color:#1b1f3b;opacity:0;transform:translateY(20px);transition:all 0.5s ease;animation:pulseTip 2s infinite alternate;}
+@keyframes pulseTip{0%{transform:translateY(20px) scale(1);}100%{transform:translateY(18px) scale(1.02);}}
+
+/* Particles container */
+#particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+
+/* Individual particle */
+.particle{position:absolute;border-radius:50%;opacity:0.8;}
+
+/* Falling animations */
+@keyframes fall{0%{transform:translateY(0);}100%{transform:translateY(100vh);}}
+
+/* Animated sun */
+#sun{font-size:5rem;position:absolute;top:10%;left:50%;transform:translateX(-50%);animation:rotateSun 5s linear infinite alternate;}
+@keyframes rotateSun{0%{transform:translateX(-50%) rotate(0deg);}100%{transform:translateX(-50%) rotate(15deg);}}
+
+/* Falling leaves for wind */
+.leaf{position:absolute;width:15px;height:15px;background:orange;border-radius:50%;opacity:0.8;animation:fallLeaf linear infinite;}
+@keyframes fallLeaf{0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(100vh) rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="cloud cloud1"></div>
+<div class="cloud cloud2"></div>
+<div class="cloud cloud3"></div>
+
+<h2>🌤️ Weather Detection</h2>
+<p>Check the current weather of any place 🌍</p>
+
+<div class="input-container">
+<input type="text" id="placeInput" placeholder="Enter place...">
+<button onclick="getWeather()">Search</button>
+</div>
+
+<div class="weather-card" id="weatherResult">
+<div class="weather-icon" id="weatherIcon">☀️</div>
+<h3 id="placeName"></h3>
+<p id="temperature"></p>
+<p id="condition"></p>
+</div>
+
+<div id="travelTip"></div>
+<div id="particles"></div>
+<div id="sun" style="display:none;">😎</div>
+
+<script>
+// Generate particles
+function generateParticles(type){
+const container=document.getElementById("particles");
+container.innerHTML="";
+let count=50;
+for(let i=0;i<count;i++){
+const p=document.createElement("div");
+p.classList.add("particle");
+p.style.left=Math.random()*100+"vw";
+p.style.top=Math.random()*-100+"vh";
+if(type==="snow"){p.style.width="7px";p.style.height="7px";p.style.background="#fff";}
+else if(type==="rain"){p.style.width="3px";p.style.height="10px";p.style.background="#00f";}
+else if(type==="leaf"){p.style.width="15px";p.style.height="15px";p.style.background="orange";}
+p.style.animationDuration=(type==="snow"?5+Math.random()*5:1+Math.random()*2)+"s";
+if(type==="leaf") p.style.animationDuration=(3+Math.random()*3)+"s";
+p.classList.add(type==="leaf"?"leaf":"particle");
+container.appendChild(p);
+}
+}
+
+// Main function
+async function getWeather(){
+const place=document.getElementById("placeInput").value.trim();
+const apiKey="a6c82c2662d7e6ccc29bb66f289ae1d8";
+const url=`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=${apiKey}&units=metric`;
+
+try{
+const response=await fetch(url);
+const data=await response.json();
+if(data.cod!=200){alert(`❌ Error: ${data.message}`);return;}
+
+const card=document.getElementById("weatherResult");
+card.classList.add("show");
+
+const temp=data.main.temp;
+const condition=data.weather[0].main;
+
+document.getElementById("placeName").innerText=`📍 ${data.name}`;
+document.getElementById("temperature").innerText=`🌡️ ${temp}°C`;
+document.getElementById("condition").innerText=`☁️ ${data.weather[0].description}`;
+
+const iconMap={"Clear":"☀️","Clouds":"☁️","Rain":"🌧️","Drizzle":"🌦️","Thunderstorm":"⛈️","Snow":"❄️","Mist":"🌫️","Smoke":"💨","Haze":"🌫️","Fog":"🌫️"};
+document.getElementById("weatherIcon").innerText=iconMap[condition]||"🌤️";
+
+// Travel Tips
+let tip="";
+const sun=document.getElementById("sun");
+sun.style.display="none";
+if(temp>35){tip="🔥 Too hot! Plan journey after some days & stay hydrated."; sun.style.display="block";}
+else if(temp>=20 && temp<=35){tip="☀️ Perfect weather! Great for sightseeing.";}
+else if(temp<20){tip="❄️ Cold! Don’t forget sweaters & warm jackets.";}
+
+if(condition.toLowerCase().includes("rain")){tip+=" 🌧️ Carry umbrella or raincoat."; generateParticles("rain");}
+else if(condition.toLowerCase().includes("snow")){tip+=" ❄️ Snowfall! Wear warm shoes."; generateParticles("snow");}
+else if(condition.toLowerCase().includes("mist")||condition.toLowerCase().includes("wind")){tip+=" 💨 Windy! Hold your hat tight."; generateParticles("leaf");}
+else if(!condition.toLowerCase().includes("rain") && !condition.toLowerCase().includes("snow")) document.getElementById("particles").innerHTML="";
+
+const tipDiv=document.getElementById("travelTip");
+tipDiv.innerText=tip;
+tipDiv.style.opacity=1;
+tipDiv.style.transform="translateY(0)";
+}catch(err){console.error(err);}
+}
+</script>
+
+</body>
+</html>

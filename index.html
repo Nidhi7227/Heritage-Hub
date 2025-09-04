@@ -6,237 +6,77 @@
   <title>HeritageHub – Reviving Forgotten Histories</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
     body { background: #f9f9f9; color: #333; }
 
-    /* Navbar */
-  /* Navbar background */
-/* Navbar full strip */
-.navbar {
-  background: #000;
-  padding: 15px 8%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    .navbar { background: #000; padding: 15px 8%; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+    .navbar .container { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.6rem; font-weight: 700; color: #f6f7f8; }
+    .navbar ul { list-style: none; display: flex; margin: 0; }
+    .navbar ul li { margin-left: 25px; }
+    .navbar ul li a { text-decoration: none; color: white; font-weight: 500; position: relative; transition: color 0.3s ease; }
+    .navbar ul li a::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 0; height: 2px; background: #ffcc00; transition: width 0.3s; }
+    .navbar ul li a:hover { color: #ffcc00; }
+    .navbar ul li a:hover::after { width: 100%; }
 
-/* Container for logo & nav */
-.navbar .container {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Logo */
-.logo {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #f6f7f8;
-  letter-spacing: 0px;
-}
-
-/* Nav links */
-.navbar ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-}
-
-.navbar ul li {
-  margin-left: 25px;
-}
-
-.navbar ul li a {
-  text-decoration: none;
-  color: white;
-  font-weight: 500;
-  position: relative;
-  transition: color 0.3s ease;
-}
-
-/* Hover effect underline */
-.navbar ul li a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 2px;
-  background: #ffcc00;
-  transition: width 0.3s;
-}
-
-.navbar ul li a:hover {
-  color: #ffcc00;
-}
-
-.navbar ul li a:hover::after {
-  width: 100%;
-}
-
-    /* Hero */
-    .hero {
-      height: 100vh;
-      background: url('https://images.unsplash.com/photo-1565866184570-dbde9dca71d0?q=80&w=1600&auto=format&fit=crop') center/cover fixed;
-      display: flex; justify-content: center; align-items: center; text-align: center; color: white;
-    }
-    .hero-text {
-      background: rgba(0,0,0,0.5); padding: 30px; border-radius: 15px;
-      animation: fadeIn 2s ease-in-out;
-    }
+    .hero { height: 100vh; background: url('https://images.unsplash.com/photo-1565866184570-dbde9dca71d0?q=80&w=1600&auto=format&fit=crop') center/cover fixed; display: flex; justify-content: center; align-items: center; text-align: center; color: white; }
+    .hero-text { background: rgba(0,0,0,0.5); padding: 30px; border-radius: 15px; animation: fadeIn 2s ease-in-out; }
     .hero-text h1 { font-size: 3rem; margin-bottom: 15px; }
     .hero-text p { font-size: 1.2rem; }
     @keyframes fadeIn { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
 
-    /* Sections */
     section { padding: 70px 10%; }
     h2.section-title { text-align: center; font-size: 2.2rem; margin-bottom: 20px; position: relative; }
-    h2.section-title::after {
-      content: ''; width: 80px; height: 4px; background: #ffcc00;
-      display: block; margin: 10px auto; border-radius: 2px;
-    }
+    h2.section-title::after { content: ''; width: 80px; height: 4px; background: #ffcc00; display: block; margin: 10px auto; border-radius: 2px; }
     p.section-sub { text-align: center; color: #555; margin-bottom: 40px; }
 
-    /* About */
-.about {
-  padding: 60px 20px;
-  text-align: center;
-  background: #f9f9f9;
-}
+    .about { padding: 60px 20px; text-align: center; background: #f9f9f9; }
+    .about h2 { font-size: 2.5rem; margin-bottom: 15px; color: #2c3e50; }
+    .about-intro { max-width: 800px; margin: 0 auto 40px; font-size: 1.1rem; color: #555; line-height: 1.7; }
 
+    .slider-container { position: relative; max-width: 700px; margin: auto; overflow: hidden; }
+    .slider { display: flex; transition: transform 0.5s ease-in-out; }
+    .slide { min-width: 100%; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .slide .icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+    .prev, .next { position: absolute; top: 50%; transform: translateY(-50%); background: #2c3e50; color: white; border: none; padding: 12px; cursor: pointer; border-radius: 50%; font-size: 1.2rem; }
+    .prev:hover, .next:hover { background: #16a085; }
+    .prev { left: -50px; }
+    .next { right: -50px; }
 
-.about h2 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-  color: #2c3e50;
-}
-
-.about-intro {
-  max-width: 800px;
-  margin: 0 auto 40px;
-  font-size: 1.1rem;
-  color: #555;
-  line-height: 1.7;
-}
-
-/* Slider container */
-.slider-container {
-  position: relative;
-  max-width: 700px;
-  margin: auto;
-  overflow: hidden;
-}
-
-/* Slides */
-.slider {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
-.slide {
-  min-width: 100%;
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.slide .icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 10px;
-}
-
-/* Buttons */
-.prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #2c3e50;
-  color: white;
-  border: none;
-  padding: 12px;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 1.2rem;
-}
-
-.prev:hover, .next:hover {
-  background: #16a085;
-}
-
-.prev {
-  left: -50px;
-}
-
-.next {
-  right: -50px;
-}
-
-
-    /* Stats */
     .stats { display: flex; justify-content: space-around; padding: 60px 20px; background: #fff; text-align: center; }
     .stat { font-size: 2rem; font-weight: bold; color: #444; }
     .stat-label { font-size: 1rem; color: #777; }
 
-    /* Cards */
     .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
-    .card {
-      background: white; border-radius: 15px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card img { width: 100%; height: 200px; object-fit: cover; }
+    .card { background: white; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card img { width: 100%; height: 300px; object-fit: cover; }
     .card-content { padding: 20px; }
     .card h3 { margin-bottom: 10px; color: #333; }
     .card p { color: #666; font-size: 0.9rem; }
     .card:hover { transform: translateY(-10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 
-    /* Features */
     .features { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-    .feature-box {
-      flex: 1 1 250px; background: white; padding: 20px; border-radius: 12px;
-      text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
+    .feature-box { flex: 1 1 250px; background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: 0.3s; }
     .feature-box:hover { transform: translateY(-8px); }
 
-    /* Footer */
-    footer {
-      background: #222; color: #bbb; text-align: center;
-      padding: 30px 15px; margin-top: 50px;
-      /* Vertical nav alignment */
-
-    }
+    footer { background: #222; color: #bbb; text-align: center; padding: 30px 15px; margin-top: 50px; }
   </style>
 </head>
 <body>
-  <!-- Navbar --<!-- Navbar -->
-<!-- Navbar -->
-<!-- Navbar -->
-<nav class="navbar">
-  <div class="container">
-    <div class="logo">🏛 HeritageHub</div>
-    <ul>
-      <li><a href="#">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="explore.html">Explore</a></li>
-     <li><a href="#features">Features</a></li>
-      <li><a href="contribute.html">Contribute</a></li>
-      <li><a href="admin .html">Admin</a></li>
-    </ul>
-  </div>
-</nav>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="logo">🏛 HeritageHub</div>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="contribute.html">Contribute</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
 
   <!-- Hero -->
   <section class="hero">
@@ -246,110 +86,94 @@
     </div>
   </section>
 
-<!-- About Section -->
-<section id="about" class="about">
-  <h2>About HeritageHub</h2>
-  <p class="about-intro">
-    HeritageHub is your digital gateway to explore India’s hidden stories, monuments, and cultural gems.  
-    We bring history closer, blending technology with tradition.
-  </p>
+  <!-- About Section -->
+  <section id="about" class="about">
+    <h2>About HeritageHub</h2>
+    <p class="about-intro">
+      HeritageHub is your digital gateway to explore India’s hidden stories, monuments, and cultural gems.  
+      We bring history closer, blending technology with tradition.
+    </p>
 
-  <div class="slider-container">
-    <div class="slider">
-      <div class="slide">
-        <span class="icon">🏰</span>
-        <h3>Discover Heritage</h3>
-        <p>Uncover lesser-known monuments, temples, and forts across districts with detailed guides.</p>
+    <div class="slider-container">
+      <div class="slider">
+        <div class="slide"><span class="icon">🏰</span><h3>Discover Heritage</h3><p>Uncover lesser-known monuments, temples, and forts across districts with detailed guides.</p></div>
+        <div class="slide"><span class="icon">🗺️</span><h3>Interactive Maps</h3><p>Navigate easily with integrated maps, routes, and real-time weather updates for travelers.</p></div>
+        <div class="slide"><span class="icon">📖</span><h3>Shared Stories</h3><p>Read and contribute fascinating tales, folklore, and historical events from every corner.</p></div>
+        <div class="slide"><span class="icon">🌍</span><h3>Multilingual Support</h3><p>Explore in English & Tamil – making history accessible to everyone in their own tongue.</p></div>
       </div>
-
-      <div class="slide">
-        <span class="icon">🗺️</span>
-        <h3>Interactive Maps</h3>
-        <p>Navigate easily with integrated maps, routes, and real-time weather updates for travelers.</p>
-      </div>
-
-      <div class="slide">
-        <span class="icon">📖</span>
-        <h3>Shared Stories</h3>
-        <p>Read and contribute fascinating tales, folklore, and historical events from every corner.</p>
-      </div>
-
-      <div class="slide">
-        <span class="icon">🌍</span>
-        <h3>Multilingual Support</h3>
-        <p>Explore in English & Tamil – making history accessible to everyone in their own tongue.</p>
-      </div>
+      <button class="prev">❮</button>
+      <button class="next">❯</button>
     </div>
-
-    <!-- Navigation buttons -->
-    <button class="prev">❮</button>
-    <button class="next">❯</button>
-  </div>
-</section>
-
+  </section>
 
   <!-- Stats -->
   <section class="stats" id="stats">
     <div>
-      <div class="stat" data-target="120">0</div>
+      <div class="stat" id="placesCount" data-target="0">0</div>
       <div class="stat-label">Places Listed</div>
     </div>
     <div>
-      <div class="stat" data-target="85">0</div>
+      <div class="stat" id="storiesCount" data-target="0">0</div>
       <div class="stat-label">Stories Contributed</div>
     </div>
     <div>
-      <div class="stat" data-target="500">0</div>
+      <div class="stat" id="communityCount" data-target="0">0</div>
       <div class="stat-label">Community Members</div>
     </div>
   </section>
 
   <!-- Explore Cards -->
-  <section id="explore">
-    <h2 class="section-title">Explore Heritage</h2>
-    <p class="section-sub">Dive into iconic places and hidden gems</p>
-    <div class="cards">
+  <!-- Explore Cards -->
+<section id="explore">
+  <h2 class="section-title">Explore Heritage</h2>
+  <p class="section-sub">Dive into iconic places and hidden gems</p>
+  <div class="cards">
+
+    <!-- Temples -->
+    <a href="place.html?type=temple" style="text-decoration:none; color:inherit;">
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1596178060671-7a80dc2a6a3e?q=80&w=1200&auto=format&fit=crop" alt="Temple">
+        <img src="https://cdn.pixabay.com/photo/2016/05/30/17/51/temple-1425382_640.jpg">
         <div class="card-content">
-          <h3>Chola Temples</h3>
-          <p>Marvel at the architecture and stories of the mighty Chola dynasty.</p>
+          <h3>Temples</h3>
+          <p>Marvel at the architecture and stories of Temples.</p>
         </div>
       </div>
+    </a>
+
+    <!-- Forts -->
+    <a href="place.html?type=fort" style="text-decoration:none; color:inherit;">
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1587814213270-96f3f94a639a?q=80&w=1200&auto=format&fit=crop" alt="Fort">
+        <img src="https://live.staticflickr.com/352/19306313068_d8825b5997_b.jpg">
         <div class="card-content">
           <h3>Historic Forts</h3>
           <p>Explore forgotten forts that once defended kingdoms across India.</p>
         </div>
       </div>
+    </a>
+
+    <!-- Palaces -->
+    <a href="place.html?type=palace" style="text-decoration:none; color:inherit;">
       <div class="card">
-        <img src="https://images.unsplash.com/photo-1586162546317-0086f07d7000?q=80&w=1200&auto=format&fit=crop" alt="Palace">
+        <img src="https://media.assettype.com/outlooktraveller/2023-10/cb1a7d73-114d-41c8-ab54-c61796be059c/Kaanadukathan_Palace.jpg?w=1200&ar=40:21&auto=format%2Ccompress&ogImage=true&mode=crop&enlarge=true&overlay=false&overlay_position=bottom&overlay_width=100">
         <div class="card-content">
           <h3>Royal Palaces</h3>
           <p>Walk through grand palaces that whisper tales of royalty.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </a>
+
+  </div>
+</section>
+
 
   <!-- Features -->
   <section id="features">
     <h2 class="section-title">Why Choose HeritageHub?</h2>
     <p class="section-sub">Experience history like never before</p>
     <div class="features">
-      <div class="feature-box">
-        <h3>📍 Map-Based Exploration</h3>
-        <p>Find heritage sites near you or explore across India with our interactive maps.</p>
-      </div>
-      <div class="feature-box">
-        <h3>🌐 Multilingual Support</h3>
-        <p>Read and contribute stories in your local language for wider reach.</p>
-      </div>
-      <div class="feature-box">
-        <h3>🤝 Community Powered</h3>
-        <p>Every story and image is shared by people like you, making it authentic.</p>
-      </div>
+      <div class="feature-box"><h3>📍 Map-Based Exploration</h3><p>Find heritage sites near you or explore across India with our interactive maps.</p></div>
+      <div class="feature-box"><h3>🌐 Multilingual Support</h3><p>Read and contribute stories in your local language for wider reach.</p></div>
+      <div class="feature-box"><h3>🤝 Community Powered</h3><p>Every story and image is shared by people like you, making it authentic.</p></div>
     </div>
   </section>
 
@@ -359,41 +183,87 @@
     <p>Contact us: heritagehub@support.com | Follow us on 🌐</p>
   </footer>
 
-  <!-- Counter Script -->
-  <script>
-    const counters = document.querySelectorAll('.stat');
-    const speed = 100; 
-    const animateCounters = () => {
-      counters.forEach(counter => {
-        const updateCount = () => {
-          const target = +counter.getAttribute('data-target');
-          const count = +counter.innerText;
-          const increment = target / speed;
-          if(count < target) {
-            counter.innerText = Math.ceil(count + increment);
-            setTimeout(updateCount, 20);
-          } else {
-            counter.innerText = target;
-          }
-        };
-        updateCount();
-      });
-    };
-    let triggered = false;
-    window.addEventListener('scroll', () => {
-      const section = document.querySelector('.stats');
-      const sectionTop = section.offsetTop;
-      const scrollY = window.scrollY + window.innerHeight;
-      if (!triggered && scrollY > sectionTop) {
-        animateCounters();
-        triggered = true;
-      }
+  <!-- Firebase + Counter Script -->
+<!-- Firebase + Counter Script -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { 
+    getFirestore, 
+    collection, 
+    getCountFromServer 
+  } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+  // ✅ Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
+    authDomain: "heritagehub-ede14.firebaseapp.com",
+    projectId: "heritagehub-ede14",
+    storageBucket: "heritagehub-ede14.firebasestorage.app",
+    messagingSenderId: "517516088585",
+    appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 🔹 Load Firestore counts faster
+  async function loadCounts() {
+    try {
+      // ✅ Count places (assuming all places are stored in a top-level "places" collection)
+      const placesSnap = await getCountFromServer(collection(db, "places"));
+
+      // ✅ Count stories
+      const storiesSnap = await getCountFromServer(collection(db, "stories"));
+
+      // ✅ Count users
+      const usersSnap = await getCountFromServer(collection(db, "users"));
+
+      // Set values for counters
+      document.getElementById("placesCount").setAttribute("data-target", placesSnap.data().count);
+      document.getElementById("storiesCount").setAttribute("data-target", storiesSnap.data().count);
+      document.getElementById("communityCount").setAttribute("data-target", usersSnap.data().count);
+    } catch (err) {
+      console.error("Error loading counts:", err);
+    }
+  }
+  loadCounts();
+
+  // 🔹 Counter Animation
+  const counters = document.querySelectorAll('.stat');
+  const speed = 100; 
+  const animateCounters = () => {
+    counters.forEach(counter => {
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / speed;
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(updateCount, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
     });
+  };
+
+  let triggered = false;
+  window.addEventListener('scroll', () => {
+    const section = document.querySelector('.stats');
+    const sectionTop = section.offsetTop;
+    const scrollY = window.scrollY + window.innerHeight;
+    if (!triggered && scrollY > sectionTop) {
+      animateCounters();
+      triggered = true;
+    }
+  });
+
+  // 🔹 Slider
   const slider = document.querySelector(".slider");
   const slides = document.querySelectorAll(".slide");
   const prevBtn = document.querySelector(".prev");
   const nextBtn = document.querySelector(".next");
-
   let index = 0;
 
   function showSlide(i) {
@@ -403,11 +273,8 @@
 
   prevBtn.addEventListener("click", () => showSlide(index - 1));
   nextBtn.addEventListener("click", () => showSlide(index + 1));
-
-  // Auto slide every 5 sec
   setInterval(() => showSlide(index + 1), 5000);
 </script>
 
-  </script>
 </body>
 </html>
