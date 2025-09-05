@@ -2,84 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HeritageHub Admin Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .sidebar { width: 220px; position: fixed; height: 100%; background: #343a40; padding-top: 20px; }
+    .sidebar h2 { color: #fff; text-align: center; margin-bottom: 30px; }
+    .sidebar a { padding: 12px; text-decoration: none; font-size: 16px; color: #fff; display: block; }
+    .sidebar a:hover { background-color: #495057; }
+    .main { margin-left: 220px; padding: 20px; }
+    .stat-card { display: inline-block; width: 23%; margin: 1%; padding: 20px; border-radius: 10px; color: white; text-align: center; }
+    .contributors { background-color: #0d6efd; }
+    .stories { background-color: #198754; }
+    .approvals { background-color: #ffc107; color: black; }
+    .card-img { max-width: 100px; border-radius: 5px; }
+    .action-btn { margin-right: 5px; }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+      emailjs.init("8mebFs2PGpi2JbjkA"); // Your EmailJS Public Key
+  })();
+</script>
+
 </head>
 <body>
-<div class="container mt-4">
-  <h1>Admin Dashboard</h1>
-  <div id="storyList"></div>
+
+<div class="sidebar">
+  <h2>HeritageHub</h2>
+  <a href="#">Dashboard</a>
+  <a href="#">Contributors</a>
+  <a href="#">Stories</a>
+  <a href="#">Settings</a>
 </div>
 
-<!-- Firebase Modular SDK -->
+<div class="main">
+  <h1>Admin Dashboard</h1>
+  <div id="statsContainer" class="mb-4">
+    <div class="stat-card contributors"><h3>Total Contributors</h3><p>0</p></div>
+    <div class="stat-card stories"><h3>Total Stories</h3><p>0</p></div>
+    <div class="stat-card approvals"><h3>Pending Approvals</h3><p>0</p></div>
+  </div>
+
+  <h2>All Story Submissions</h2>
+  <div id="submissionsList"></div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-import { send } from "https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js";
-
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
   authDomain: "heritagehub-ede14.firebaseapp.com",
   projectId: "heritagehub-ede14",
   storageBucket: "heritagehub-ede14.appspot.com",
   messagingSenderId: "517516088585",
-  appId: "1:517516088585:web:51fd73ace5a10430a2afd8"
+  appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Initialize EmailJS
-emailjs.init("q6rDqik08Ut284_bI"); // Replace with your EmailJS public key
+async function fetchSubmissions() {
+  const snap = await getDocs(collection(db, "contributions"));
+  const all = snap.docs.map(d => ({id: d.id, ...d.data()}));
 
-const storyListDiv = document.getElementById("storyList");
+  // Stats
+  const totalStories = all.length;
+  const pendingCount = all.filter(c => c.status==="pending").length;
+  const contributorsCount = new Set(all.map(c=>c.contributorEmail)).size;
 
-// Real-time listener for all stories
-onSnapshot(collection(db, "stories"), (snapshot) => {
-  storyListDiv.innerHTML = ""; // Clear previous content
-  snapshot.docs.forEach(docSnap => {
-    const data = docSnap.data();
-    const div = document.createElement("div");
-    div.classList.add("card","mb-3","p-3");
-    div.innerHTML = `
-      <h5>${data.title} (${data.status})</h5>
-      <p>${data.story}</p>
-      <p><b>Location:</b> ${data.location}</p>
-      ${data.status==="pending" ? `
-        <button class="btn btn-success btn-sm" onclick="updateStatus('${docSnap.id}','approved','${data.contributorEmail}','${data.title}','${data.story}')">Approve</button>
-        <button class="btn btn-danger btn-sm" onclick="updateStatus('${docSnap.id}','rejected','${data.contributorEmail}','${data.title}','${data.story}')">Reject</button>
-      ` : ''}
-      <hr>
+  document.querySelector(".contributors p").innerText = contributorsCount;
+  document.querySelector(".stories p").innerText = totalStories;
+  document.querySelector(".approvals p").innerText = pendingCount;
+
+  // List all submissions
+  const container = document.getElementById("submissionsList");
+  container.innerHTML = "";
+
+  all.forEach(c => {
+    const card = document.createElement("div");
+    card.classList.add("card", "mb-3");
+    card.innerHTML = `
+      <div class="card-body d-flex align-items-start">
+        <img src="${c.imageUrl}" class="card-img me-3">
+        <div class="flex-grow-1">
+          <h5>${c.title} (${c.status})</h5>
+          <p>${c.description.substring(0,150)}...</p>
+          <p><b>Contributor:</b> ${c.contributorName} | <b>Email:</b> ${c.contributorEmail} | <b>District:</b> ${c.district}</p>
+          ${c.status==="pending" ? `
+            <button class="btn btn-success btn-sm action-btn" onclick="updateStatus('${c.id}','verified')">Approve</button>
+            <button class="btn btn-danger btn-sm action-btn" onclick="updateStatus('${c.id}','rejected')">Reject</button>
+          ` : ''}
+        </div>
+      </div>
     `;
-    storyListDiv.appendChild(div);
+    container.appendChild(card);
   });
-});
+}
 
-// Update story status and send email notification
-window.updateStatus = async (id, status, email, title, story) => {
-  const docRef = doc(db, "stories", id);
-  await updateDoc(docRef, { status });
+window.updateStatus = async (id,status) => {
+  await updateDoc(doc(db,"contributions",id),{status});
+  fetchSubmissions();
+}
 
-  // Send email to contributor if email exists
-  if (email) {
-    const templateParams = {
-      to_name: email,
-      to_email: email,
-      story_title: title,
-      story_content: story,
-      status: status
-    };
-
-    emailjs.send("service_ilwca7s", "template_rjt8uon", templateParams)
-      .then(() => { console.log(`Email sent to ${email}`); })
-      .catch(err => { console.error("EmailJS error:", err); });
-  }
-};
+fetchSubmissions();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="translate.js"></script>
+<script type="module">window.updateStatus = async (id, status) => {
+  const docRef = doc(db,"contributions",id);
+
+  // Get current story data
+  const snap = await getDocs(collection(db, "contributions"));
+  const story = snap.docs.map(d=>({id:d.id,...d.data()})).find(c=>c.id===id);
+
+  // Update Firestore
+  await updateDoc(docRef, { status });
+
+  // Send email notification
+  if (story && story.contributorEmail) {
+    const templateParams = {
+      to_name: story.contributorName,
+      to_email: story.contributorEmail,
+      story_title: story.title,
+      status: status
+    };
+
+    emailjs.send('service_ilwca7s','template_rjt8uon',templateParams)
+    .then(()=>{ alert(`Email sent to ${story.contributorName}`); })
+    .catch(err=>{ console.error('Email failed:', err); });
+  }
+
+  fetchSubmissions(); // refresh the list
+}
+</script>
 </body>
 </html>
