@@ -1,88 +1,181 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Submit Story</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contribute a Story – HeritageHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f9f9f9; color: #333; }
+    header { width: 100%; padding: 15px 40px; background: #222; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 20px; font-weight: 600; }
+    nav a { margin-left: 20px; text-decoration: none; color: #fff; font-weight: 500; transition: color 0.3s; }
+    nav a:hover { color: #f4d03f; }
+    .form-container { max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .form-container h2 { text-align: center; margin-bottom: 20px; font-size: 24px; color: #222; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #444; }
+    input, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.3s; }
+    input:focus, textarea:focus { border: 1px solid #f4d03f; }
+    textarea { min-height: 100px; resize: vertical; }
+    .file-input { border: none; }
+    button { width: 100%; padding: 12px; background: #f4d03f; color: #222; font-size: 16px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    button:hover { background: #d4ac0d; transform: translateY(-2px); }
+    .success-message { margin-top: 20px; padding: 12px; border-radius: 10px; background: #eafaf1; color: #2e7d32; text-align: center; display: none; }
+  </style>
 </head>
 <body>
-  <h2>Contribute Your Story</h2>
-  <form id="storyForm">
-    <input id="title" placeholder="Title" required><br><br>
-    <textarea id="story" placeholder="Your story..." required></textarea><br><br>
-    <input id="location" placeholder="Location" required><br><br>
-    <input id="email" placeholder="Your Email" type="email" required><br><br>
-    <button type="submit">Submit</button>
+
+<header>
+  <h1>HeritageHub</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="explore.html">Explore</a>
+    <a href="contribute.html">Contribute</a>
+    <a href="dashboard.html">Dashboard</a>
+  </nav>
+</header>
+
+<div class="form-container">
+  <h2>Contribute a Story</h2>
+  <form id="contributeForm">
+    <div class="form-group">
+      <label for="userName">Your Name</label>
+      <input type="text" id="userName" name="userName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="userEmail">Your Email</label>
+      <input type="email" id="userEmail" name="userEmail" required>
+    </div>
+
+    <div class="form-group">
+      <label for="placeName">Name of the Place</label>
+      <input type="text" id="placeName" name="placeName" required>
+    </div>
+
+    <div class="form-group">
+      <label for="location">Location / District</label>
+      <input type="text" id="location" name="location" required>
+    </div>
+
+    <div class="form-group">
+      <label for="latitude">Latitude</label>
+      <input type="text" id="latitude" name="latitude" required>
+    </div>
+
+    <div class="form-group">
+      <label for="longitude">Longitude</label>
+      <input type="text" id="longitude" name="longitude" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description / Story</label>
+      <textarea id="description" name="description" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Upload Image (Optional)</label>
+      <input type="file" id="image" class="file-input" accept="image/*">
+    </div>
+
+    <button type="submit">Submit Contribution</button>
+    <div class="success-message" id="successMessage">
+      🎉 Thanks! Your story has been submitted and is pending admin review.
+    </div>
   </form>
+</div>
 
-  <p id="statusMsg"></p>
+<!-- Firebase v8 -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<script>
+  emailjs.init("q6rDqik08Ut284_bI"); // your public key
+</script>
 
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+<script>
+  // Firebase Config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
+    authDomain: "heritagehub-ede14.firebaseapp.com",
+    projectId: "heritagehub-ede14",
+    storageBucket: "heritagehub-ede14.appspot.com",
+    messagingSenderId: "517516088585",
+    appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const storage = firebase.storage();
 
-  <script>
-    // ✅ Firebase config
-    const firebaseConfig = {
-      apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
-      authDomain: "heritagehub-ede14.firebaseapp.com",
-      projectId: "heritagehub-ede14",
-      storageBucket: "heritagehub-ede14.appspot.com",
-      messagingSenderId: "517516088585",
-      appId: "1:517516088585:web:51fd73ace5a10430a2afd8"
-    };
+  const form = document.getElementById("contributeForm");
+  const successMessage = document.getElementById("successMessage");
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-    // ✅ Initialize EmailJS
-    emailjs.init("q6rDqik08Ut284_bI"); // replace with your EmailJS public key
+    const userName = document.getElementById("userName").value;
+    const userEmail = document.getElementById("userEmail").value;
+    const placeName = document.getElementById("placeName").value;
+    const location = document.getElementById("location").value;
+    const latitude = document.getElementById("latitude").value;
+    const longitude = document.getElementById("longitude").value;
+    const description = document.getElementById("description").value;
+    const imageInput = document.getElementById("image");
 
-    // Handle form submission
-    document.getElementById("storyForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    let imageURL = null;
+    if (imageInput.files.length > 0) {
+      const file = imageInput.files[0];
+      const storageRef = storage.ref("contributions/" + Date.now() + "_" + file.name);
+      await storageRef.put(file);
+      imageURL = await storageRef.getDownloadURL();
+    }
 
-      const title = document.getElementById("title").value.trim();
-      const story = document.getElementById("story").value.trim();
-      const location = document.getElementById("location").value.trim();
-      const email = document.getElementById("email").value.trim();
+    try {
+      await db.collection("contributions").add({
+        userName,
+        userEmail,
+        placeName,
+        location,
+        latitude,
+        longitude,
+        description,
+        imageURL,
+        status: "pending",
+        submittedAt: new Date()
+      });
 
-      if (!title || !story || !location || !email) {
-        document.getElementById("statusMsg").innerText = "❌ Please fill all fields!";
-        return;
-      }
+      // Auto-reply email to contributor
+      emailjs.send("service_ilwca7s", "template_cm4jnm6", {
+        to_email: userEmail,
+        user_name: userName,
+        place_name: placeName,
+        location,
+        description
+      });
 
-      try {
-        // 1️⃣ Save to Firestore
-        await db.collection("stories").add({
-          title,
-          story,
-          location,
-          contributorEmail: email,
-          status: "pending",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
+      // Notification email to admin
+      emailjs.send("service_ilwca7s", "template_rjt8uon", {
+        to_email: "nive131006@gmail.com",
+        user_name: userName,
+        user_email: userEmail,
+        place_name: placeName,
+        location,
+        description
+      });
 
-        // 2️⃣ Send email via EmailJS
-        const templateParams = {
-          to_name: "Admin",     // your name
-          from_name: email,     // contributor's email
-          story_title: title,
-          story_content: story,
-          location: location
-        };
-
-        await emailjs.send("service_ilwca7s", "template_rjt8uon", templateParams);
-
-        document.getElementById("statusMsg").innerText = "✅ Story submitted successfully!";
-        e.target.reset();
-      } catch (err) {
-        console.error("Error:", err);
-        document.getElementById("statusMsg").innerText = "❌ Submission failed!";
-      }
-    });
-  </script>
+      successMessage.style.display = "block";
+      form.reset();
+    } catch (err) {
+      console.error("Error:", err);
+      alert("❌ Failed to submit. Check console.");
+    }
+  });
+</script>
 </body>
 </html>
