@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HeritageHub Admin Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card { box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h1 { margin-bottom: 30px; }
+  </style>
 </head>
 <body>
 <div class="container mt-4">
@@ -11,12 +17,11 @@
   <div id="storyList"></div>
 </div>
 
-<!-- Firebase Modular SDK -->
+<!-- Firebase + EmailJS -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
-import { send } from "https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js";
+import { send, init } from "https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -33,23 +38,24 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Initialize EmailJS
-emailjs.init("q6rDqik08Ut284_bI"); // Replace with your EmailJS public key
+init("q6rDqik08Ut284_bI"); // Your EmailJS public key
 
 const storyListDiv = document.getElementById("storyList");
 
-// Real-time listener for all stories
+// Real-time listener for stories collection
 onSnapshot(collection(db, "stories"), (snapshot) => {
   storyListDiv.innerHTML = ""; // Clear previous content
+
   snapshot.docs.forEach(docSnap => {
     const data = docSnap.data();
     const div = document.createElement("div");
-    div.classList.add("card","mb-3","p-3");
+    div.classList.add("card", "mb-3", "p-3");
     div.innerHTML = `
-      <h5>${data.title} (${data.status})</h5>
+      <h5>${data.title} <span class="badge ${data.status === 'approved' ? 'bg-success' : data.status === 'rejected' ? 'bg-danger' : 'bg-warning'}">${data.status}</span></h5>
       <p>${data.story}</p>
       <p><b>Location:</b> ${data.location}</p>
-      ${data.status==="pending" ? `
-        <button class="btn btn-success btn-sm" onclick="updateStatus('${docSnap.id}','approved','${data.contributorEmail}','${data.title}','${data.story}')">Approve</button>
+      ${data.status === "pending" ? `
+        <button class="btn btn-success btn-sm me-2" onclick="updateStatus('${docSnap.id}','approved','${data.contributorEmail}','${data.title}','${data.story}')">Approve</button>
         <button class="btn btn-danger btn-sm" onclick="updateStatus('${docSnap.id}','rejected','${data.contributorEmail}','${data.title}','${data.story}')">Reject</button>
       ` : ''}
       <hr>
@@ -58,12 +64,11 @@ onSnapshot(collection(db, "stories"), (snapshot) => {
   });
 });
 
-// Update story status and send email notification
+// Update status and send email
 window.updateStatus = async (id, status, email, title, story) => {
   const docRef = doc(db, "stories", id);
   await updateDoc(docRef, { status });
 
-  // Send email to contributor if email exists
   if (email) {
     const templateParams = {
       to_name: email,
@@ -73,9 +78,9 @@ window.updateStatus = async (id, status, email, title, story) => {
       status: status
     };
 
-    emailjs.send("service_ilwca7s", "template_rjt8uon", templateParams)
-      .then(() => { console.log(`Email sent to ${email}`); })
-      .catch(err => { console.error("EmailJS error:", err); });
+    send("service_ilwca7s", "template_rjt8uon", templateParams)
+      .then(() => console.log(`Email sent to ${email}`))
+      .catch(err => console.error("EmailJS error:", err));
   }
 };
 </script>
