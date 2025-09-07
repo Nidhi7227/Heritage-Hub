@@ -7,175 +7,276 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: #f9f9f9; color: #333; }
-    header { width: 100%; padding: 15px 40px; background: #222; color: #fff; display: flex; justify-content: space-between; align-items: center; }
-    header h1 { font-size: 20px; font-weight: 600; }
-    nav a { margin-left: 20px; text-decoration: none; color: #fff; font-weight: 500; transition: color 0.3s; }
-    nav a:hover { color: #f4d03f; }
-    .form-container { max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-    .form-container h2 { text-align: center; margin-bottom: 20px; font-size: 24px; color: #222; }
-    .form-group { margin-bottom: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #444; }
-    input, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; font-size: 14px; outline: none; transition: border 0.3s; }
-    input:focus, textarea:focus { border: 1px solid #f4d03f; }
-    textarea { min-height: 100px; resize: vertical; }
-    .file-input { border: none; }
-    button { width: 100%; padding: 12px; background: #f4d03f; color: #222; font-size: 16px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
-    button:hover { background: #d4ac0d; transform: translateY(-2px); }
-    .success-message { margin-top: 20px; padding: 12px; border-radius: 10px; background: #eafaf1; color: #2e7d32; text-align: center; display: none; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      width: 100%;
+      padding: 15px 40px;
+      background: #222;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    nav a {
+      margin-left: 20px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #f4d03f;
+    }
+
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #222;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #444;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      border: 1px solid #f4d03f;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .file-input {
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #f4d03f;
+      color: #222;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: #d4ac0d;
+      transform: translateY(-2px);
+    }
+
+    .success-message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #eafaf1;
+      color: #2e7d32;
+      text-align: center;
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>HeritageHub</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="explore.html">Explore</a>
-    <a href="contribute.html">Contribute</a>
-    <a href="dashboard.html">Dashboard</a>
-  </nav>
-</header>
+  <!-- Navbar -->
+  <header>
+    <h1>HeritageHub</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="contribute.html">Contribute</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+  </header>
 
-<div class="form-container">
-  <h2>Contribute a Story</h2>
-  <form id="contributeForm">
-    <div class="form-group">
-      <label for="userName">Your Name</label>
-      <input type="text" id="userName" name="userName" required>
-    </div>
+  <!-- Form -->
+  <div class="form-container">
+    <h2>Contribute a Story</h2>
+    <form id="contributeForm">
+      
+      <div class="form-group">
+        <label for="userName">Your Name</label>
+        <input type="text" id="userName" name="userName" required>
+      </div>
 
-    <div class="form-group">
-      <label for="userEmail">Your Email</label>
-      <input type="email" id="userEmail" name="userEmail" required>
-    </div>
+      <div class="form-group">
+        <label for="placeName">Name of the Place</label>
+        <input type="text" id="placeName" name="placeName" required>
+      </div>
 
-    <div class="form-group">
-      <label for="placeName">Name of the Place</label>
-      <input type="text" id="placeName" name="placeName" required>
-    </div>
+      <div class="form-group">
+        <label for="location">Location / District</label>
+        <input type="text" id="location" name="location" required>
+      </div>
 
-    <div class="form-group">
-      <label for="location">Location / District</label>
-      <input type="text" id="location" name="location" required>
-    </div>
+      <div class="form-group">
+        <label for="latitude">Latitude</label>
+        <input type="text" id="latitude" name="latitude" required>
+      </div>
 
-    <div class="form-group">
-      <label for="latitude">Latitude</label>
-      <input type="text" id="latitude" name="latitude" required>
-    </div>
+      <div class="form-group">
+        <label for="longitude">Longitude</label>
+        <input type="text" id="longitude" name="longitude" required>
+      </div>
 
-    <div class="form-group">
-      <label for="longitude">Longitude</label>
-      <input type="text" id="longitude" name="longitude" required>
-    </div>
+      <div class="form-group">
+        <label for="description">Description / Story</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
 
-    <div class="form-group">
-      <label for="description">Description / Story</label>
-      <textarea id="description" name="description" required></textarea>
-    </div>
+      <div class="form-group">
+        <label for="image">Upload Image (Optional)</label>
+        <input type="file" id="image" class="file-input" accept="image/*">
+      </div>
 
-    <div class="form-group">
-      <label for="image">Upload Image (Optional)</label>
-      <input type="file" id="image" class="file-input" accept="image/*">
-    </div>
+      <button type="submit">Submit Contribution</button>
 
-    <button type="submit">Submit Contribution</button>
-    <div class="success-message" id="successMessage">
-      🎉 Thanks! Your story has been submitted and is pending admin review.
-    </div>
-  </form>
-</div>
+      <div class="success-message" id="successMessage">
+        🎉 Thanks! Your story has been submitted and is pending admin review.
+      </div>
+    </form>
+  </div>
 
-<!-- Firebase v8 -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
-<script>
-  emailjs.init("q6rDqik08Ut284_bI"); // your public key
-</script>
-
-<script>
-  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyCDZvBUNUEKEXU5_YeQtgUc-dkMQxbFnTg",
     authDomain: "heritagehub-ede14.firebaseapp.com",
     projectId: "heritagehub-ede14",
-    storageBucket: "heritagehub-ede14.appspot.com",
+    storageBucket: "heritagehub-ede14.firebasestorage.app",
     messagingSenderId: "517516088585",
     appId: "1:517516088585:web:7fc9b19f424e0081a2afd8"
   };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const storage = firebase.storage();
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
   const form = document.getElementById("contributeForm");
   const successMessage = document.getElementById("successMessage");
+  const userNameField = document.getElementById("userName");
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      console.log("Logged in as:", user.email);
 
-    const userName = document.getElementById("userName").value;
-    const userEmail = document.getElementById("userEmail").value;
-    const placeName = document.getElementById("placeName").value;
-    const location = document.getElementById("location").value;
-    const latitude = document.getElementById("latitude").value;
-    const longitude = document.getElementById("longitude").value;
-    const description = document.getElementById("description").value;
-    const imageInput = document.getElementById("image");
+      userNameField.value = user.displayName || user.email;
+      userNameField.readOnly = true;
 
-    let imageURL = null;
-    if (imageInput.files.length > 0) {
-      const file = imageInput.files[0];
-      const storageRef = storage.ref("contributions/" + Date.now() + "_" + file.name);
-      await storageRef.put(file);
-      imageURL = await storageRef.getDownloadURL();
-    }
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    try {
-      await db.collection("contributions").add({
-        userName,
-        userEmail,
-        placeName,
-        location,
-        latitude,
-        longitude,
-        description,
-        imageURL,
-        status: "pending",
-        submittedAt: new Date()
+        const placeName = document.getElementById("placeName").value;
+        const location = document.getElementById("location").value;
+        const latitude = document.getElementById("latitude").value;
+        const longitude = document.getElementById("longitude").value;
+        const description = document.getElementById("description").value;
+
+        try {
+          await addDoc(collection(db, "contributions"), {
+            contributorEmail: user.email,      // ✅ for dashboard query
+            userId: user.uid,
+            userName: userNameField.value,
+            placeName,
+            location,
+            latitude,
+            longitude,
+            description,
+            imageURL: null,                     // can extend for actual uploads
+            status: "pending",                  // ✅ default status
+            submittedAt: serverTimestamp()      // ✅ timestamp
+          });
+            // ✅ Send email to contributor
+  emailjs.send("service_ilwca7s", "template_cm4jnm6", {
+    to_email: user.email,
+    user_name: userNameField.value,
+    place_name: placeName,
+    location,
+    description
+  }).then(() => {
+    console.log("Contributor email sent ✅");
+  }).catch(err => {
+    console.error("Error sending contributor email:", err);
+  });
+
+  // ✅ Send email to admin
+  emailjs.send("service_ilwca7s", "template_rjt8uon", {
+    to_email: "nive131006@gmail.com",   // your admin mail
+    user_name: userNameField.value,
+    user_email: user.email,
+    place_name: placeName,
+    location,
+    description
+  }).then(() => {
+    console.log("Admin email sent ✅");
+  }).catch(err => {
+    console.error("Error sending admin email:", err);
+  });
+          successMessage.style.display = "block";
+          form.reset();
+          userNameField.value = user.displayName || user.email;
+        } catch (error) {
+          console.error("Error adding document: ", error);
+        }
       });
-
-      // Auto-reply email to contributor
-      emailjs.send("service_ilwca7s", "template_cm4jnm6", {
-        to_email: userEmail,
-        user_name: userName,
-        place_name: placeName,
-        location,
-        description
-      });
-
-      // Notification email to admin
-      emailjs.send("service_ilwca7s", "template_rjt8uon", {
-        to_email: "nive131006@gmail.com",
-        user_name: userName,
-        user_email: userEmail,
-        place_name: placeName,
-        location,
-        description
-      });
-
-      successMessage.style.display = "block";
-      form.reset();
-    } catch (err) {
-      console.error("Error:", err);
-      alert("❌ Failed to submit. Check console.");
     }
   });
 </script>
+
 </body>
 </html>
