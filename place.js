@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Get IDs from URL
+// Get URL Params
 const params = new URLSearchParams(window.location.search);
 const districtId = params.get("district");
 const placeId = params.get("place");
@@ -32,31 +32,35 @@ async function loadPlaceData() {
 
     const place = placeSnap.data();
 
-    // Banner
-    document.getElementById("placeBanner").style.backgroundImage = `url('${place.image}')`;
-    document.querySelector("#placeBanner h1").textContent = place.name;
+    // Set Banner Image & Title
+    const banner = document.getElementById("placeBanner");
+    banner.style.backgroundImage = `url('${place.image}')`;
+    banner.querySelector("h1").textContent = place.name;
 
-    // Content
+    // Set Place Name & Description
     document.getElementById("placeName").textContent = place.name;
     document.getElementById("placeDescription").textContent = place.description;
 
-    // ✅ Map (free iframe method)
+    // Set Map
     document.getElementById("mapFrame").src =
       `https://maps.google.com/maps?q=${place.latitude},${place.longitude}&z=15&output=embed`;
 
-    // Route button
+    // Setup Route Button
     document.getElementById("routeBtn").addEventListener("click", () => {
       window.open(`https://www.google.com/maps/dir/?api=1&destination=${place.latitude},${place.longitude}`, "_blank");
     });
 
-    // Weather
-    document.getElementById("weatherBtn").addEventListener("click", () => getWeather(place.latitude, place.longitude, place.name));
+    // Setup Weather Button
+    document.getElementById("weatherBtn").addEventListener("click", () => {
+      getWeather(place.latitude, place.longitude, place.name);
+    });
 
-    // Ratings
+    // Ratings (if you want to display average ratings)
     updateRatingUI(place.ratings || []);
     setupRating(placeRef, place.ratings || []);
-  } catch (err) {
-    console.error("Error loading place:", err);
+  } catch (error) {
+    console.error("Error loading place data:", error);
+    showPopup("Error", "Unable to load place details at this time.");
   }
 }
 
@@ -67,9 +71,8 @@ function showPopup(title, content) {
   document.getElementById('popupOverlay').style.display = 'block';
 }
 
-// Weather
 async function getWeather(lat, lng, placeName) {
-  const apiKey = "a6c82c2662d7e6ccc29bb66f289ae1d8"; // OpenWeather key
+  const apiKey = "a6c82c2662d7e6ccc29bb66f289ae1d8"; // OpenWeather API key
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKey}&units=metric`;
 
   try {
@@ -78,8 +81,8 @@ async function getWeather(lat, lng, placeName) {
 
     if (data.main) {
       const message =
-        `🌡 Temp: ${data.main.temp}°C\n` +
-        `☁️ Condition: ${data.weather[0].description}\n` +
+        `🌡 Temperature: ${data.main.temp}°C\n` +
+        `☁ Condition: ${data.weather[0].description}\n` +
         `💧 Humidity: ${data.main.humidity}%`;
 
       showPopup(`🌍 Weather at ${placeName}`, message);
@@ -88,18 +91,19 @@ async function getWeather(lat, lng, placeName) {
     }
   } catch (err) {
     console.error(err);
-    showPopup("Error", "Failed to fetch weather.");
+    showPopup("Error", "Failed to retrieve weather data.");
   }
 }
 
-// Rating system
 function updateRatingUI(ratings) {
   const avgRatingEl = document.getElementById("avgRating");
+  if (!avgRatingEl) return; // Prevent error if element not present
+
   if (ratings.length === 0) {
-    avgRatingEl.textContent = "Average Rating: Not yet rated";
+    avgRatingEl.textContent = "⭐ Average Rating: No ratings yet";
   } else {
     const avg = (ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1);
-    avgRatingEl.textContent = `Average Rating: ${avg} ⭐ (${ratings.length} votes)`;
+    avgRatingEl.textContent = `⭐ Average Rating: ${avg} (${ratings.length} votes)`;
   }
 }
 
@@ -116,13 +120,14 @@ function setupRating(placeRef, currentRatings) {
         });
         currentRatings.push(ratingValue);
         updateRatingUI(currentRatings);
-        showPopup("Thank you!", "⭐ Thanks for your rating!");
+        showPopup("Thank you!", "⭐ Your rating has been saved!");
       } catch (err) {
         console.error("Error saving rating:", err);
-        showPopup("Error", "Failed to save your rating.");
+        showPopup("Error", "Could not save rating at this time.");
       }
     });
   });
 }
 
+// 🔔 Trigger the load
 loadPlaceData();
