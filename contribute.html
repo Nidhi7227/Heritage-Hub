@@ -122,7 +122,7 @@
       background: #eafaf1;
       color: #2e7d32;
       text-align: center;
-      display: none;
+      display: none; /* ✅ hide by default */
     }
   </style>
 </head>
@@ -187,6 +187,18 @@
     </form>
   </div>
 
+  <!-- ✅ EmailJS SDK -->
+  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+    emailjs.init({
+      publicKey: "q6rDqik08Ut284_bI"  // ⚠️ Replace with your EmailJS public key
+    });
+  })();
+</script>
+
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
@@ -228,8 +240,9 @@
         const description = document.getElementById("description").value;
 
         try {
+          // ✅ Save to Firestore
           await addDoc(collection(db, "contributions"), {
-            contributorEmail: user.email,      // ✅ for dashboard query
+            contributorEmail: user.email,
             userId: user.uid,
             userName: userNameField.value,
             placeName,
@@ -237,39 +250,46 @@
             latitude,
             longitude,
             description,
-            imageURL: null,                     // can extend for actual uploads
-            status: "pending",                  // ✅ default status
-            submittedAt: serverTimestamp()      // ✅ timestamp
+            status: "pending",
+            submittedAt: serverTimestamp()
           });
-            // ✅ Send email to contributor
-  emailjs.send("service_ilwca7s", "template_cm4jnm6", {
-    to_email: user.email,
-    user_name: userNameField.value,
-    place_name: placeName,
-    location,
-    description
-  }).then(() => {
-    console.log("Contributor email sent ✅");
-  }).catch(err => {
-    console.error("Error sending contributor email:", err);
-  });
 
-  // ✅ Send email to admin
-  emailjs.send("service_ilwca7s", "template_rjt8uon", {
-    to_email: "nive131006@gmail.com",   // your admin mail
-    user_name: userNameField.value,
-    user_email: user.email,
-    place_name: placeName,
-    location,
-    description
-  }).then(() => {
-    console.log("Admin email sent ✅");
-  }).catch(err => {
-    console.error("Error sending admin email:", err);
-  });
+          // ✅ Send email to contributor
+          emailjs.send("service_ilwca7s", "template_cm4jnm6", {
+            to_email: user.email,
+            user_name: userNameField.value,
+            place_name: placeName,
+            location,
+            description
+          }).then(() => {
+            console.log("Contributor email sent ✅");
+          }).catch(err => {
+            console.error("Contributor email error:", err);
+          });
+
+          // ✅ Send email to admin
+          emailjs.send("service_ilwca7s", "template_rjt8uon", {
+            email: user.email,                
+            user_name: userNameField.value,
+            user_email: user.email,
+            place_name: placeName,
+            location,
+            description
+          }).then(() => {
+            console.log("Admin email sent ✅");
+          }).catch(err => {
+            console.error("Admin email error:", err);
+          });
+
+          // ✅ Show success popup
           successMessage.style.display = "block";
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 4000);
+
           form.reset();
           userNameField.value = user.displayName || user.email;
+
         } catch (error) {
           console.error("Error adding document: ", error);
         }

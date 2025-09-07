@@ -3,35 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Explore Places</title>
-  <link rel="stylesheet" href="places.css">
+  <title>Place Details - HeritageHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #333;
+    }
+    header {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+    .banner {
+      height: 450px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    .container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    h2 {
+      margin-bottom: 0.8rem;
+      font-size: 1.8rem;
+      color: #2c3e50;
+    }
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .map {
+      margin: 2rem 0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: none;
+    }
+    .actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .actions button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 8px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+    .actions button:hover {
+      background: #2980b9;
+      transform: scale(1.05);
+    }
+    /* Feedback Section */
+    .feedback {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .feedback h3 {
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+      color: #2c3e50;
+    }
+    .tags {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 0.6rem 1rem;
+      border-radius: 20px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .tag.active {
+      background: #2c3e50;
+      color: white;
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Explore Heritage Places</h1>
-    <p id="pageTitle">Loading...</p>
-  </header>
+  <header>HeritageHub – Place Details</header>
 
-  <main>
-    <section id="explore">
-      <div id="placesContainer" class="cards"></div>
-    </section>
-  </main>
-  <!-- Popup Modal -->
-<!-- Popup Modal -->
-<div id="popup" class="popup-overlay">
-  <div class="popup-content">
-    <span class="close-btn">&times;</span>
-    <img id="popup-img" src="" alt="Place Image">
-    <h2 id="popup-title"></h2>
-    <p id="popup-desc"></p>
-    <a id="popup-map" href="#" target="_blank" class="map-btn">View on Map</a>
+  <!-- Banner -->
+  <div id="placeBanner" class="banner">
+    <h1>Loading...</h1>
   </div>
+
+  <div class="container">
+    <h2 id="placeName"></h2>
+    <p id="placeDescription"></p>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button id="routeBtn">🗺 View Route</button>
+      <button id="weatherBtn">🌤 Check Weather</button>
+    </div>
+
+    <!-- Map -->
+    <div class="map">
+      <iframe id="mapFrame"></iframe>
+    </div>
+
+<div class="feedback">
+  <h3>✨ Share Your Experience</h3>
+  <div class="tags" id="feedbackTags">
+    <span class="tag" data-value="Historical">🏛 Historical <small>(0)</small></span>
+    <span class="tag" data-value="Peaceful">🌿 Peaceful <small>(0)</small></span>
+    <span class="tag" data-value="Scenic">🌄 Scenic <small>(0)</small></span>
+    <span class="tag" data-value="Must Visit">⭐ Must Visit <small>(0)</small></span>
+  </div>
+</div><!-- Popup Modal for Weather and Messages -->
+<div id="customPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: white; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border-radius: 12px; z-index: 1000; max-width: 400px; text-align: center;">
+  
+  <h3 id="popupTitle">Title</h3>
+  <p id="popupContent">Content goes here...</p>
+  <button onclick="document.getElementById('customPopup').style.display='none';"
+    style="margin-top: 1rem; padding: 0.5rem 1rem; background: #3498db; color: white; border: none; border-radius: 5px;">
+    Close
+  </button>
+</div>
+
+<!-- Overlay to dim background when popup is shown -->
+<div id="popupOverlay" style="display: none; position: fixed; top: 0; left:0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); z-index: 999;"
+  onclick="document.getElementById('customPopup').style.display='none'; this.style.display='none';">
 </div>
 
 
 
-  <!-- Script should be at the end -->
-  <script type="module" src="place.js"></script>
+  <script type="module" src="place.js">
+ 
+  </script>
 </body>
-</html>
+</html>    

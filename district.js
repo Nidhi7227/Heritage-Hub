@@ -19,24 +19,32 @@ const districtId = params.get("id");
 
 async function loadDistrictData() {
   if (!districtId) {
-    document.getElementById("districtName").textContent = "No district selected!";
+    document.getElementById("districtBanner").innerHTML = "<h2>No district selected!</h2>";
     return;
   }
 
   try {
-    // 1. Get district details
+    // District Details
     const districtRef = doc(db, "districts", districtId);
     const districtSnap = await getDoc(districtRef);
 
     if (districtSnap.exists()) {
       const districtData = districtSnap.data();
-      document.getElementById("districtName").textContent = districtData.name;
+
+      document.getElementById("districtBanner").innerHTML = `
+        <div class="banner" style="background-image: url('${districtData.image}')">
+          <div class="banner-overlay">
+            <h1>${districtData.name}</h1>
+            <p>${districtData.description}</p>
+          </div>
+        </div>
+      `;
     } else {
-      document.getElementById("districtName").textContent = "District not found!";
+      document.getElementById("districtBanner").innerHTML = "<h2>District not found!</h2>";
       return;
     }
 
-    // 2. Get places under this district
+    // Places under district
     const placesContainer = document.getElementById("placesContainer");
     placesContainer.innerHTML = "";
 
@@ -46,7 +54,7 @@ async function loadDistrictData() {
       return;
     }
 
-    placesSnap.forEach((placeDoc) => {
+    placesSnap.forEach((placeDoc, index) => {
       const place = placeDoc.data();
 
       const card = document.createElement("div");
@@ -54,31 +62,25 @@ async function loadDistrictData() {
       card.innerHTML = `
         <img src="${place.image || "placeholder.jpg"}" alt="${place.name}">
         <h3>${place.name}</h3>
-        <p>${place.description || "No description available."}</p>
-        <button onclick="alert('Route to ${place.name} coming soon!')">View on Map</button>
+        <p>${place.description ? place.description.substring(0, 100) + "..." : "No description available."}</p>
+        <button onclick="viewPlace('${districtId}', '${placeDoc.id}')">View Details</button>
       `;
+
+      // Animation
+      setTimeout(() => card.classList.add("visible"), index * 200);
 
       placesContainer.appendChild(card);
     });
 
   } catch (error) {
     console.error("Error loading district data:", error);
-    document.getElementById("districtName").textContent = "Error loading data!";
+    document.getElementById("districtBanner").innerHTML = "<h2>Error loading data!</h2>";
   }
 }
 
+// Redirect to place page
+window.viewPlace = function(districtId, placeId) {
+  window.location.href = `place.html?district=${districtId}&place=${placeId}`;
+}
+
 loadDistrictData();
-placesSnap.forEach((placeDoc) => {
-  const place = placeDoc.data();
-
-  const card = document.createElement("div");
-  card.className = "place-card";
-  card.innerHTML = `
-    <img src="${place.image || "placeholder.jpg"}" alt="${place.name}">
-    <h3>${place.name}</h3>
-    <p>${place.description ? place.description.substring(0, 80) + "..." : "No description available."}</p>
-    <button onclick="window.location.href='place.html?district=${districtId}&place=${placeDoc.id}'">View More</button>
-  `;
-
-  placesContainer.appendChild(card);
-});
