@@ -1,117 +1,68 @@
-
-
-.user-dashboard {
-  background-color: #fdfaf5;
-  border-radius: 16px;
-  padding: 50px 30px;
-  font-family: 'Poppins', sans-serif;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease-in-out;
-}
-
-.user-dashboard h2,
-.user-dashboard h4 {
-  color: #4b3200;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 20px;
-}
-
-.card {
-  border-radius: 16px;
-  background: linear-gradient(145deg, #fff8e1, #f1e4c2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: none;
-  text-align: center;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  color: #7b4e00;
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.card-text {
-  font-size: 1.75rem;
-  font-weight: bold;
-  color: #a66c00;
-}
-
-.btn-primary {
-  background-color: #c29000;
-  border: none;
-  padding: 10px 25px;
-  font-weight: 600;
-  border-radius: 25px;
-  transition: background-color 0.3s ease;
-  font-size: 1rem;
-}
-
-.btn-primary:hover {
-  background-color: #9e7500;
-}
-
-.btn-outline-primary {
-  border-color: #c29000;
-  color: #c29000;
-  font-weight: 500;
-}
-
-.btn-outline-primary:hover {
-  background-color: #c29000;
-  color: #fff;
-}
-
-.table {
-  background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  font-size: 0.95rem;
-}
-
-.table th {
-  background-color: #f8eacb;
-  color: #5c3d00;
-  font-weight: 600;
-}
-
-.table td {
-  color: #3f2b1c;
-}
-
-.badge {
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 20px;
-}
-
-.badge.bg-success {
-  background-color: #4CAF50;
-}
-
-.badge.bg-warning {
-  background-color: #FFC107;
-  color: #5b3f00;
-}
-
+ body { background-color: #f8f9fa; }
+    .sidebar { height: 100vh; background-color: #343a40; }
+    .sidebar a { color: #fff; display: block; padding: 15px; text-decoration: none; }
+    .sidebar a:hover { background-color: #495057; }
+    .content { padding: 20px; position: relative; }
+    .stat-card { padding: 20px; border-radius: 10px; font-size: 16px; font-weight: bold; color: white; text-align: center; }
+    .accepted { background-color: #0d6efd; }
+    .pending { background-color: #ffc107; color: black; }
+    .rejected { background-color: #dc3545; }
+    .total { background-color: brown; }
+    .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+    #logoutBtn { position: absolute; top: 0; right: 0; margin: 20px; }
+    /* ===== MOBILE RESPONSIVENESS ENHANCEMENTS FOR ADMIN PAGE ===== */
 @media (max-width: 768px) {
-  .user-dashboard {
-    padding: 30px 15px;
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 0;
   }
 
-  .card-text {
-    font-size: 1.4rem;
+  .sidebar a {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
   }
 
-  .table-responsive {
-    overflow-x: auto;
+  .content {
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  #logoutBtn {
+    position: relative;
+    display: block;
+    margin: 15px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar a {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .stat-card {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
   }
 }

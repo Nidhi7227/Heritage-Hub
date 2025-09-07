@@ -72,6 +72,38 @@
       height: 100px;
       overflow-y: auto;
     }
+    /* ===== MOBILE RESPONSIVENESS MAGIC ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+    height: auto;
+    display: block;
+    text-align: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 90%;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  input[type="email"] {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 15px;
+  }
+
+  button {
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  #log {
+    height: 150px;
+  }
+}
+
   </style>
 </head>
 <body>

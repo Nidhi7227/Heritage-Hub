@@ -21,6 +21,63 @@
     .total { background-color: brown; }
     .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
     #logoutBtn { position: absolute; top: 0; right: 0; margin: 20px; }
+    /* ===== MOBILE RESPONSIVENESS ENHANCEMENTS FOR ADMIN PAGE ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+  .sidebar a {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .content {
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+  .stat-card {
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  #logoutBtn {
+    position: relative;
+    display: block;
+    margin: 15px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar a {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .stat-card {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+}
+
   </style>
 </head>
 

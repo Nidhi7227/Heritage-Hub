@@ -151,3 +151,100 @@ header {
 .place-card button:hover {
   background: linear-gradient(135deg, #2563eb, #1e40af);
 }
+/* ===== MOBILE RESPONSIVENESS ENHANCEMENTS FOR PLACES GRID ===== */
+@media (max-width: 768px) {
+  #placesContainer {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 15px;
+    padding: 5px;
+  }
+
+  .place-card {
+    padding: 12px;
+  }
+
+  .place-card img {
+    height: 150px;
+  }
+
+  .place-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .place-card p {
+    font-size: 13px;
+  }
+
+  .view-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #placesContainer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 10px;
+    padding: 5px;
+  }
+
+  .place-card img {
+    height: 130px;
+  }
+
+  .place-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .place-card p {
+    font-size: 12px;
+  }
+
+  .view-btn {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
+}
+/* ===== MOBILE RESPONSIVENESS ENHANCEMENTS FOR BANNER ===== */
+@media (max-width: 768px) {
+  .banner {
+    height: 50vh;
+    padding: 20px;
+  }
+
+  .banner-overlay {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .banner-overlay h1 {
+    font-size: 2rem;
+  }
+
+  .banner-overlay p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    height: 40vh;
+    padding: 15px;
+  }
+
+  .banner-overlay {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .banner-overlay h1 {
+    font-size: 1.5rem;
+  }
+
+  .banner-overlay p {
+    font-size: 0.9rem;
+  }
+}

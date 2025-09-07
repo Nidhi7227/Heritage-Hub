@@ -63,3 +63,40 @@ body{
     align-items: center;
     justify-content: center;
 }
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #left, #right {
+    width: 100%;
+    height: auto;
+    padding: 2rem 1rem;
+  }
+
+  #left {
+    order: 1;
+  }
+
+  #right {
+    order: 2;
+    min-height: 200px;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .sign {
+    width: 100%;
+  }
+
+  .sign input, .sign button {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  #logo {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+}

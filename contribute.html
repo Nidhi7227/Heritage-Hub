@@ -124,6 +124,67 @@
       text-align: center;
       display: none;
     }
+    /* ===== MOBILE RESPONSIVENESS ENHANCEMENTS FOR FORM ===== */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  nav a {
+    margin-left: 0;
+    margin-right: 15px;
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  .form-container {
+    padding: 20px;
+    margin: 30px 15px;
+  }
+
+  input, textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 18px;
+  }
+
+  .form-container {
+    padding: 15px;
+    margin: 20px 10px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  input, textarea {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .success-message {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
   </style>
 </head>
 <body>
