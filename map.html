@@ -61,6 +61,58 @@
       max-width: 250px;
       font-size: 14px;
     }
+    /* ===== MOBILE RESPONSIVENESS FOR MAP PAGE ===== */
+@media (max-width: 768px) {
+  .search-container {
+    top: 15px;
+    width: 90%;
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  #place-input {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  #search-btn {
+    padding: 12px;
+    font-size: 1rem;
+    margin-top: 8px;
+  }
+
+  #info-panel {
+    max-width: 90%;
+    font-size: 0.9rem;
+    padding: 12px;
+    left: 5%;
+    right: 5%;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    top: 10px;
+    width: 95%;
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  #place-input {
+    font-size: 0.9rem;
+  }
+
+  #search-btn {
+    font-size: 0.9rem;
+  }
+
+  #info-panel {
+    max-width: 95%;
+    font-size: 0.85rem;
+    padding: 10px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -145,5 +197,6 @@
         });
     });
   </script>
+  <script src="translate.js"></script>
 </body>
 </html>

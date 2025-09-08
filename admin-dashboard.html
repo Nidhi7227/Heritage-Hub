@@ -15,6 +15,57 @@
     .accept-btn { background-color: #4CAF50; color: white; }
     .delete-btn { background-color: #f44336; color: white; }
     #chartContainer { max-width: 600px; margin: auto; }
+    /* ===== MOBILE RESPONSIVENESS ENHANCEMENTS ===== */
+@media (max-width: 768px) {
+  #contributions-container {
+    gap: 10px;
+    padding: 0 10px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .card h3 {
+    font-size: 1.2rem;
+  }
+
+  .card p {
+    font-size: 0.95rem;
+  }
+
+  .card button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  #chartContainer {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card h3 {
+    font-size: 1rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .card button {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+  }
+
+  #chartContainer {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
   </style>
   <!-- Firebase v8 SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>

@@ -100,3 +100,67 @@ body { background:#f9f9f9; color:#333; }
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .navbar ul li {
+    margin: 10px 0;
+  }
+
+  .hero {
+    height: 40vh;
+    background-attachment: scroll;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .cards-container {
+    padding: 30px 5%;
+    grid-template-columns: 1fr;
+  }
+
+  .place-card img {
+    height: 200px;
+  }
+
+  .banner {
+    height: 40vh;
+    background-attachment: scroll;
+  }
+
+  .banner-overlay {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .banner-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+  .banner-overlay p {
+    font-size: 1rem;
+  }
+
+  .card-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .card-content p {
+    font-size: 0.85rem;
+  }
+}
