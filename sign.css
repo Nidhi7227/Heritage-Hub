@@ -5,9 +5,10 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-body{
+body {
     height: 100%;
     width: 100%;
+    background-color: #fdf6e3; /* Soft heritage tone */
 }
 
 .container {
@@ -17,7 +18,7 @@ body{
 
 #left {
     width: 35%;
-    background-color: #eeece9c0;
+    background-color: #faf0e6c0; /* Light beige with opacity */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -26,36 +27,47 @@ body{
 }
 
 #logo {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    color: #8B0000; /* Deep maroon tone */
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
-.sign{
+.sign {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 80%;
 }
 
 .sign input {
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px;
+    margin: 12px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 16px;
+    box-shadow: 1px 2px 5px rgba(0,0,0,0.1);
 }
 
 .sign button {
-    padding: 10px;
-    background-color: #4CAF50;
+    padding: 12px;
+    background-color: #A0522D; /* Heritage earthy brown */
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.sign button:hover {
+    background-color: #8B0000; /* Dark maroon on hover */
 }
 
 #right {
     width: 65%;
     background-color: #ddd;
-    background-image: url("https://wallpaperaccess.com/full/1446810.jpg");
+    background-image: url("https://i.pinimg.com/1200x/f4/8d/78/f48d7873210629072ba9ea3f1263a5a4.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -63,40 +75,41 @@ body{
     align-items: center;
     justify-content: center;
 }
+
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    height: auto;
-  }
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
 
-  #left, #right {
-    width: 100%;
-    height: auto;
-    padding: 2rem 1rem;
-  }
+    #left, #right {
+        width: 100%;
+        height: auto;
+        padding: 2rem 1rem;
+    }
 
-  #left {
-    order: 1;
-  }
+    #left {
+        order: 1;
+    }
 
-  #right {
-    order: 2;
-    min-height: 200px;
-    background-position: center;
-    background-size: cover;
-  }
+    #right {
+        order: 2;
+        min-height: 200px;
+        background-position: center;
+        background-size: cover;
+    }
 
-  .sign {
-    width: 100%;
-  }
+    .sign {
+        width: 100%;
+    }
 
-  .sign input, .sign button {
-    width: 100%;
-    margin-bottom: 15px;
-  }
+    .sign input, .sign button {
+        width: 100%;
+        margin-bottom: 15px;
+    }
 
-  #logo {
-    font-size: 1.8rem;
-    text-align: center;
-  }
+    #logo {
+        font-size: 2rem;
+        text-align: center;
+    }
 }
